@@ -44,7 +44,7 @@ The Student Grouping App is a web application designed for teachers to manage cl
 
 1. **Clone the Repository**
     ```bash
-    git clone https://github.com/yourusername/student-grouping-app.git
+    git clone https://github.com/4eyedRaven/student_grouper.git
     cd student-grouping-app
     ```
 
