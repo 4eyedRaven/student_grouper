@@ -1,36 +1,181 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Student Grouping App
+The Student Grouping App is a web application designed for teachers to manage classes and group students effectively. It allows teachers to create classes, add students with varying capability levels, and generate balanced student groups based on specified criteria.
 
-## Getting Started
+Features
 
-First, run the development server:
+	•	Class Management
+	•	Add new classes.
+	•	Delete existing classes.
+	•	Switch between different classes.
+	•	Student Management
+	•	Add students to a class with specified capability levels (High, Medium, Low).
+	•	Mark students as present or absent using a “Present” toggle.
+	•	Remove students from a class.
+	•	Grouping Tool
+	•	Generate student groups based on:
+	•	Number of groups.
+	•	Number of students per group.
+	•	Ensure groups are numerically balanced and have a mix of capability levels.
+	•	Display generated groups in a modal dialog (lightbox) for easy viewing.
+	•	Close the modal by clicking outside, clicking the close button, or pressing the Escape key.
 
-```bash
+Technologies Used
+
+	•	Framework: Next.js (React framework)
+	•	Language: TypeScript
+	•	Styling: CSS with custom variables
+	•	State Management: React hooks (useState, useEffect)
+	•	Data Persistence: localStorage for saving classes and students
+
+Getting Started
+
+Prerequisites
+
+	•	Node.js: Make sure you have Node.js installed (version 14 or later).
+	•	npm: Comes with Node.js. Alternatively, you can use yarn or pnpm.
+
+Installation
+
+	1.	Clone the Repository
+
+git clone https://github.com/yourusername/student-grouping-app.git
+cd student-grouping-app
+
+
+	2.	Install Dependencies
+Using npm:
+
+npm install
+
+Or using yarn:
+
+yarn install
+
+Or using pnpm:
+
+pnpm install
+
+
+
+Running the Development Server
+
+Start the development server:
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open your browser and navigate to http://localhost:3000 to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Class Management
 
-## Learn More
+	•	Add a New Class
+	•	Enter the class name in the “New class name” input field.
+	•	Press Enter or click the + button.
+	•	Switch Between Classes
+	•	Click on a class name in the list to select it.
+	•	Delete a Class
+	•	Click the × button next to the class name.
+	•	Confirm deletion if prompted.
 
-To learn more about Next.js, take a look at the following resources:
+Student Management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+	•	Add a New Student
+	•	Enter the student’s name in the “New student name” input field.
+	•	Select the capability level from the dropdown (High, Medium, Low).
+	•	Press Enter or click the Add Student button.
+	•	Mark Student as Present/Absent
+	•	Use the “Present” checkbox next to the student’s name to toggle their attendance.
+	•	Remove a Student
+	•	Click the Remove button in the “Actions” column next to the student’s name.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Grouping Students
 
-## Deploy on Vercel
+	•	Select Grouping Criteria
+	•	Choose between:
+	•	By Number of Groups: Specify how many groups to create.
+	•	By Students per Group: Specify how many students should be in each group.
+	•	Generate Groups
+	•	Click the Generate Groups button.
+	•	View Generated Groups
+	•	The groups will appear in a modal dialog.
+	•	Review the groups, which are balanced by number and capability levels.
+	•	Close the Modal
+	•	Click the × button in the top-right corner.
+	•	Click outside the modal content.
+	•	Press the Escape key.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Project Structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+student-grouping-app/
+├── components/
+│   ├── ClassManager.tsx
+│   ├── StudentManager.tsx
+│   └── GroupingTool.tsx
+├── pages/
+│   ├── _app.tsx
+│   └── index.tsx
+├── styles/
+│   └── globals.css
+├── types.ts
+├── package.json
+├── tsconfig.json
+└── README.md
+
+	•	components/: Contains React components for class management, student management, and the grouping tool.
+	•	pages/: Next.js pages, including the main index.tsx file.
+	•	styles/: Global CSS styles.
+	•	types.ts: TypeScript interfaces for Class and Student.
+	•	package.json: Project metadata and dependencies.
+	•	tsconfig.json: TypeScript configuration.
+
+Available Scripts
+
+In the project directory, you can run:
+
+	•	npm run dev: Runs the app in development mode.
+	•	npm run build: Builds the app for production.
+	•	npm run start: Starts the production server.
+	•	npm run lint: Runs ESLint to check for linting errors.
+
+Dependencies
+
+	•	react: “^18.x”
+	•	react-dom: “^18.x”
+	•	next: “^12.x” or later
+	•	typescript: “^4.x” (as a dev dependency)
+	•	@types/react: “^17.x” (as a dev dependency)
+	•	@types/react-dom: “^17.x” (as a dev dependency)
+	•	eslint: “^7.x” (as a dev dependency)
+	•	eslint-config-next: “^11.x” (as a dev dependency)
+
+Contributing
+
+Contributions are welcome! Please follow these steps:
+
+	1.	Fork the Repository
+	2.	Create a Feature Branch
+
+git checkout -b feature/YourFeature
+
+
+	3.	Commit Your Changes
+
+git commit -m "Add your message"
+
+
+	4.	Push to the Branch
+
+git push origin feature/YourFeature
+
+
+	5.	Open a Pull Request
+
+License
+
+This project is licensed under the MIT License.
+
+Acknowledgments
+
+	•	Thanks to all contributors and users who have provided feedback and suggestions (my wife).
+	•	Built with Next.js and TypeScript.

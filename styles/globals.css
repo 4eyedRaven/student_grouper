@@ -138,3 +138,131 @@ input[type="text"], input[type="number"] {
     min-width: auto;
   }
 }
+
+.student-item em {
+  color: var(--accent-color);
+  margin-left: 0.5rem;
+  font-style: normal;
+  font-size: 0.9rem;
+}
+
+.student-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-list th,
+.student-list td {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+
+.student-list th {
+  background-color: var(--border-color);
+}
+
+.student-list tr.excluded td {
+  opacity: 0.5;
+}
+
+.student-list input[type='checkbox'] {
+  transform: scale(1.2);
+}
+
+.remove-btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+}
+
+.remove-btn:hover {
+  color: var(--accent-color);
+}
+
+.add-student {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.add-student input[type='text'],
+.add-student select {
+  flex: 1;
+}
+
+.add-student button {
+  flex-shrink: 0;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.modal-content {
+  background-color: var(--bg-color);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  color: var(--text-color);
+  cursor: default;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  color: var(--accent-color);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.modal-content .groups-display {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.modal-content .group-card {
+  background-color: var(--border-color);
+  padding: 1rem;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.modal-content .group-card h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+}
+
+.modal-content .group-card ul {
+  list-style-type: none;
+  padding: 0;
+}

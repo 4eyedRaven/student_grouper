@@ -1,32 +1,76 @@
-import { useState } from 'react'
-import { Student } from '../types'
+// components/GroupingTool.tsx
+import { useState, useEffect } from 'react';
+import { Student } from '../types';
 
 interface GroupingToolProps {
-  students: Student[]
+  students: Student[];
 }
 
 export default function GroupingTool({ students }: GroupingToolProps) {
-  const [groupingOption, setGroupingOption] = useState<'byGroups' | 'byStudents'>('byGroups')
-  const [groupCount, setGroupCount] = useState(2)
-  const [groups, setGroups] = useState<Student[][]>([])
+  const [groupingOption, setGroupingOption] = useState<'byGroups' | 'byStudents'>('byGroups');
+  const [groupCount, setGroupCount] = useState(2);
+  const [groups, setGroups] = useState<Student[][]>([]);
+  const [showModal, setShowModal] = useState(false);
 
   const generateGroups = () => {
-    const shuffledStudents = [...students].sort(() => Math.random() - 0.5)
-    let newGroups: Student[][] = []
+    const totalStudents = students.length;
+
+    // Separate and shuffle students by capability level
+    const shuffle = (array: Student[]) => array.sort(() => Math.random() - 0.5);
+    let highStudents = shuffle(students.filter((s) => s.capabilityLevel === 'high'));
+    let mediumStudents = shuffle(students.filter((s) => s.capabilityLevel === 'medium'));
+    let lowStudents = shuffle(students.filter((s) => s.capabilityLevel === 'low'));
+
+    // Determine number of groups
+    let numGroups: number;
 
     if (groupingOption === 'byGroups') {
-      const groupSize = Math.ceil(shuffledStudents.length / groupCount)
-      for (let i = 0; i < groupCount; i++) {
-        newGroups.push(shuffledStudents.slice(i * groupSize, (i + 1) * groupSize))
-      }
+      numGroups = groupCount;
     } else {
-      for (let i = 0; i < shuffledStudents.length; i += groupCount) {
-        newGroups.push(shuffledStudents.slice(i, i + groupCount))
-      }
+      numGroups = Math.ceil(totalStudents / groupCount);
     }
 
-    setGroups(newGroups)
-  }
+    // Initialize groups
+    const newGroups: Student[][] = Array.from({ length: numGroups }, () => []);
+
+    // Interleave students from different capabilities
+    const combinedStudents: Student[] = [];
+    while (highStudents.length || mediumStudents.length || lowStudents.length) {
+      if (highStudents.length) combinedStudents.push(highStudents.shift()!);
+      if (mediumStudents.length) combinedStudents.push(mediumStudents.shift()!);
+      if (lowStudents.length) combinedStudents.push(lowStudents.shift()!);
+    }
+
+    // Distribute students to groups in a round-robin fashion
+    combinedStudents.forEach((student, index) => {
+      newGroups[index % numGroups].push(student);
+    });
+
+    setGroups(newGroups);
+    setShowModal(true); // Show the modal with the generated groups
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowModal(false);
+      }
+    };
+
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showModal]);
 
   return (
     <div className="grouping-tool">
@@ -54,25 +98,38 @@ export default function GroupingTool({ students }: GroupingToolProps) {
       <div className="group-count">
         <input
           type="number"
-          min="2"
+          min="1"
           max={students.length}
           value={groupCount}
-          onChange={(e) => setGroupCount(Math.max(2, Math.min(students.length, parseInt(e.target.value) || 2)))}
+          onChange={(e) =>
+            setGroupCount(Math.max(1, Math.min(students.length, parseInt(e.target.value) || 1)))
+          }
         />
         <button onClick={generateGroups}>Generate Groups</button>
       </div>
-      <div className="groups-display">
-        {groups.map((group, index) => (
-          <div key={index} className="group-card">
-            <h3>Group {index + 1}</h3>
-            <ul>
-              {group.map((student) => (
-                <li key={student.id}>{student.name}</li>
+      
+      {showModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={closeModal}>
+              &times;
+            </button>
+            <h2>Generated Groups</h2>
+            <div className="groups-display">
+              {groups.map((group, index) => (
+                <div key={index} className="group-card">
+                  <h3>Group {index + 1}</h3>
+                  <ul>
+                    {group.map((student) => (
+                      <li key={student.id}>{student.name}</li>
+                    ))}
+                  </ul>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

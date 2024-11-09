@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import { Student } from '../types'
+// components/StudentManager.tsx
+import { useState } from 'react';
+import { Student } from '../types';
 
 interface StudentManagerProps {
-  students: Student[]
-  onAddStudent: (name: string) => void
-  onRemoveStudent: (id: number) => void
-  onToggleExclusion: (id: number) => void
+  students: Student[];
+  onAddStudent: (name: string, capabilityLevel: 'high' | 'medium' | 'low') => void;
+  onRemoveStudent: (id: number) => void;
+  onToggleExclusion: (id: number) => void;
 }
 
 export default function StudentManager({
@@ -14,40 +15,75 @@ export default function StudentManager({
   onRemoveStudent,
   onToggleExclusion,
 }: StudentManagerProps) {
-  const [newStudentName, setNewStudentName] = useState('')
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudentCapability, setNewStudentCapability] = useState<'high' | 'medium' | 'low'>('medium');
 
   const handleAddStudent = () => {
     if (newStudentName.trim()) {
-      onAddStudent(newStudentName.trim())
-      setNewStudentName('')
+      onAddStudent(newStudentName.trim(), newStudentCapability);
+      setNewStudentName('');
+      setNewStudentCapability('medium');
     }
-  }
+  };
+
+  // **Add this function to handle the Enter key**
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddStudent();
+    }
+  };
 
   return (
     <div className="student-manager">
       <h2>Students</h2>
       <div className="student-list">
-        {students.map((student) => (
-          <div key={student.id} className={`student-item ${student.excluded ? 'excluded' : ''}`}>
-            {student.name}
-            <button className="exclude-btn" onClick={() => onToggleExclusion(student.id)}>
-              {student.excluded ? 'Include' : 'Exclude'}
-            </button>
-            <button className="remove-btn" onClick={() => onRemoveStudent(student.id)}>
-              &times;
-            </button>
-          </div>
-        ))}
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Present</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.id} className={!student.present ? 'excluded' : ''}>
+                <td>{student.name}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={student.present}
+                    onChange={() => onToggleExclusion(student.id)}
+                  />
+                </td>
+                <td>
+                  <button className="remove-btn" onClick={() => onRemoveStudent(student.id)}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div className="add-student">
         <input
           type="text"
           value={newStudentName}
           onChange={(e) => setNewStudentName(e.target.value)}
+          onKeyDown={handleKeyDown} // **Add this line**
           placeholder="New student name"
         />
-        <button onClick={handleAddStudent}>+</button>
+        <select
+          value={newStudentCapability}
+          onChange={(e) => setNewStudentCapability(e.target.value as 'high' | 'medium' | 'low')}
+        >
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <button onClick={handleAddStudent}>Add Student</button>
       </div>
     </div>
-  )
+  );
 }
