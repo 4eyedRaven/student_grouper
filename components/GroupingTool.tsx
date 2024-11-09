@@ -17,9 +17,9 @@ export default function GroupingTool({ students }: GroupingToolProps) {
 
     // Separate and shuffle students by capability level
     const shuffle = (array: Student[]) => array.sort(() => Math.random() - 0.5);
-    let highStudents = shuffle(students.filter((s) => s.capabilityLevel === 'high'));
-    let mediumStudents = shuffle(students.filter((s) => s.capabilityLevel === 'medium'));
-    let lowStudents = shuffle(students.filter((s) => s.capabilityLevel === 'low'));
+    const highStudents = shuffle(students.filter((s) => s.capabilityLevel === 'high'));
+    const mediumStudents = shuffle(students.filter((s) => s.capabilityLevel === 'medium'));
+    const lowStudents = shuffle(students.filter((s) => s.capabilityLevel === 'low'));
 
     // Determine number of groups
     let numGroups: number;
@@ -102,12 +102,12 @@ export default function GroupingTool({ students }: GroupingToolProps) {
           max={students.length}
           value={groupCount}
           onChange={(e) =>
-            setGroupCount(Math.max(1, Math.min(students.length, parseInt(e.target.value) || 1)))
+            setGroupCount(Math.max(1, Math.min(students.length, parseInt(e.target.value, 10) || 1)))
           }
         />
         <button onClick={generateGroups}>Generate Groups</button>
       </div>
-      
+
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
