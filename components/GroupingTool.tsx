@@ -10,15 +10,25 @@ interface GroupingToolProps {
 
 export default function GroupingTool({ students }: GroupingToolProps) {
   const [groupingOption, setGroupingOption] = useState<'byGroups' | 'byStudents'>('byGroups');
-  const [groupCount, setGroupCount] = useState(2);
+  const [groupCountInput, setGroupCountInput] = useState<string>(''); // Controlled input value as string
+  const [groupCount, setGroupCount] = useState<number>(2); // Parsed numerical value
   const [groups, setGroups] = useState<Student[][]>([]);
   const [showModal, setShowModal] = useState(false);
   const [draggedStudentId, setDraggedStudentId] = useState<number | null>(null); // Tracks the dragged student
+  const [inputError, setInputError] = useState<string>(''); // Error message for invalid input
 
   // Function to generate groups
   const generateGroups = () => {
+    console.log('Generate Groups button clicked.');
+
     if (students.length === 0) {
       alert('No students available to group.');
+      return;
+    }
+
+    // Validate groupCount
+    if (!Number.isInteger(groupCount) || groupCount < 1) {
+      setInputError('Please enter a valid number of groups.');
       return;
     }
 
@@ -27,11 +37,19 @@ export default function GroupingTool({ students }: GroupingToolProps) {
     const mediumStudents = students.filter((s) => s.capabilityLevel === 'medium');
     const lowStudents = students.filter((s) => s.capabilityLevel === 'low');
 
+    console.log('High Students:', highStudents);
+    console.log('Medium Students:', mediumStudents);
+    console.log('Low Students:', lowStudents);
+
     // Shuffle each capability group to ensure randomness
     const shuffle = (array: Student[]) => array.sort(() => Math.random() - 0.5);
     shuffle(highStudents);
     shuffle(mediumStudents);
     shuffle(lowStudents);
+
+    console.log('Shuffled High Students:', highStudents);
+    console.log('Shuffled Medium Students:', mediumStudents);
+    console.log('Shuffled Low Students:', lowStudents);
 
     // Combine all students, interleaving capability levels for balance
     const combinedStudents: Student[] = [];
@@ -42,22 +60,26 @@ export default function GroupingTool({ students }: GroupingToolProps) {
       if (lowStudents[i]) combinedStudents.push(lowStudents[i]);
     }
 
+    console.log('Combined Students:', combinedStudents);
+
     let numGroups: number;
 
     if (groupingOption === 'byGroups') {
       numGroups = groupCount;
       if (numGroups < 1) {
-        alert('Number of groups must be at least 1.');
+        setInputError('Number of groups must be at least 1.');
         return;
       }
     } else {
       const studentsPerGroup = groupCount;
       if (studentsPerGroup < 1) {
-        alert('Number of students per group must be at least 1.');
+        setInputError('Number of students per group must be at least 1.');
         return;
       }
       numGroups = Math.ceil(students.length / studentsPerGroup);
     }
+
+    console.log('Number of Groups:', numGroups);
 
     // Initialize empty groups
     const newGroups: Student[][] = Array.from({ length: numGroups }, () => []);
@@ -68,8 +90,11 @@ export default function GroupingTool({ students }: GroupingToolProps) {
       newGroups[groupIndex].push(student);
     });
 
+    console.log('New Groups:', newGroups);
+
     setGroups(newGroups);
     setShowModal(true); // Display the modal with groups
+    setInputError(''); // Reset any previous error messages
   };
 
   const closeModal = () => {
@@ -132,6 +157,23 @@ export default function GroupingTool({ students }: GroupingToolProps) {
     setDraggedStudentId(null); // Reset the dragged student ID
   };
 
+  // Handle input changes with validation
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only digits
+    if (/^\d*$/.test(value)) {
+      setGroupCountInput(value);
+      if (value === '') {
+        setGroupCount(0);
+      } else {
+        setGroupCount(parseInt(value, 10));
+      }
+      setInputError(''); // Reset error message on valid input
+    } else {
+      setInputError('Please enter a valid number.');
+    }
+  };
+
   return (
     <div className="grouping-tool">
       <h2>Grouping Tool</h2>
@@ -141,7 +183,12 @@ export default function GroupingTool({ students }: GroupingToolProps) {
             type="radio"
             value="byGroups"
             checked={groupingOption === 'byGroups'}
-            onChange={() => setGroupingOption('byGroups')}
+            onChange={() => {
+              setGroupingOption('byGroups');
+              setGroupCountInput('');
+              setGroupCount(2); // Reset to default
+              setInputError('');
+            }}
           />
           By Number of Groups
         </label>
@@ -150,28 +197,37 @@ export default function GroupingTool({ students }: GroupingToolProps) {
             type="radio"
             value="byStudents"
             checked={groupingOption === 'byStudents'}
-            onChange={() => setGroupingOption('byStudents')}
+            onChange={() => {
+              setGroupingOption('byStudents');
+              setGroupCountInput('');
+              setGroupCount(Math.ceil(students.length / 2)); // Example default
+              setInputError('');
+            }}
           />
           By Students per Group
         </label>
       </div>
       <div className="group-count">
         <input
-          type="number"
-          min="1"
-          max={students.length}
-          value={groupingOption === 'byGroups' ? groupCount : Math.ceil(students.length / groupCount)}
-          onChange={(e) =>
-            setGroupCount(Math.max(1, Math.min(students.length, parseInt(e.target.value, 10) || 1)))
-          }
+          type="text"
+          value={groupCountInput}
+          onChange={handleInputChange}
           placeholder={
             groupingOption === 'byGroups'
               ? 'Number of Groups'
               : 'Number of Students per Group'
           }
+          aria-label={
+            groupingOption === 'byGroups'
+              ? 'Number of Groups'
+              : 'Number of Students per Group'
+          }
+          className={inputError ? 'input-error' : ''}
         />
         <button onClick={generateGroups}>Generate Groups</button>
       </div>
+      {/* Display error message if any */}
+      {inputError && <p className="error-message">{inputError}</p>}
 
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
