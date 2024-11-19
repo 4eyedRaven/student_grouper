@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import { Student, GroupingHistoryEntry } from '../types';
 import Droppable from './Droppable';
 import DraggableStudent from './DraggableStudent';
-import EditableGroupName from './EditableGroupName'; // Ensure this is imported correctly
+import EditableGroupName from './EditableGroupName';
+import ShufflingAnimation from './ShufflingAnimation'; // Import the new component
+import { motion, AnimatePresence } from 'framer-motion'; // Import Framer Motion
 
 interface GroupingToolProps {
   students: Student[];
   currentClassId: number | null;
-  onGroupingSaved: () => void; // Callback to refresh GroupHistory
+  onGroupingSaved: () => void;
 }
 
 export default function GroupingTool({
@@ -18,20 +20,18 @@ export default function GroupingTool({
   onGroupingSaved,
 }: GroupingToolProps) {
   const [groupingOption, setGroupingOption] = useState<'byGroups' | 'byStudents'>('byGroups');
-  const [groupCountInput, setGroupCountInput] = useState<string>(''); // Controlled input value as string
-  const [groupCount, setGroupCount] = useState<number>(2); // Parsed numerical value
-  const [studentsPerGroup, setStudentsPerGroup] = useState<number>(4); // Parsed numerical value
+  const [groupCountInput, setGroupCountInput] = useState<string>('');
+  const [groupCount, setGroupCount] = useState<number>(2);
+  const [studentsPerGroup, setStudentsPerGroup] = useState<number>(4);
   const [groups, setGroups] = useState<Student[][]>([]);
-  const [groupNames, setGroupNames] = useState<{ [key: number]: string }>({}); // State to track group names
+  const [groupNames, setGroupNames] = useState<{ [key: number]: string }>({});
   const [showModal, setShowModal] = useState(false);
-  const [draggedStudentId, setDraggedStudentId] = useState<number | null>(null); // Tracks the dragged student
-  const [inputError, setInputError] = useState<string>(''); // Error message for invalid input
-  const [groupingId, setGroupingId] = useState<number | null>(null); // State for grouping ID
+  const [draggedStudentId, setDraggedStudentId] = useState<number | null>(null);
+  const [inputError, setInputError] = useState<string>('');
+  const [groupingId, setGroupingId] = useState<number | null>(null);
+  const [animationPhase, setAnimationPhase] = useState<'idle' | 'shuffling' | 'completed'>('idle'); // New state
 
-  // Function to generate groups
   const generateGroups = () => {
-    console.log('GroupingTool: Generate Groups button clicked.');
-
     if (students.length === 0) {
       alert('No students available to group.');
       return;
@@ -63,19 +63,11 @@ export default function GroupingTool({
     const mediumStudents = students.filter((s) => s.capabilityLevel === 'medium');
     const lowStudents = students.filter((s) => s.capabilityLevel === 'low');
 
-    console.log('GroupingTool: High Students:', highStudents);
-    console.log('GroupingTool: Medium Students:', mediumStudents);
-    console.log('GroupingTool: Low Students:', lowStudents);
-
-    // Shuffle each capability group to ensure randomness
+    // Shuffle each capability group
     const shuffle = (array: Student[]) => array.sort(() => Math.random() - 0.5);
     shuffle(highStudents);
     shuffle(mediumStudents);
     shuffle(lowStudents);
-
-    console.log('GroupingTool: Shuffled High Students:', highStudents);
-    console.log('GroupingTool: Shuffled Medium Students:', mediumStudents);
-    console.log('GroupingTool: Shuffled Low Students:', lowStudents);
 
     // Combine all students, interleaving capability levels for balance
     const combinedStudents: Student[] = [];
@@ -86,8 +78,6 @@ export default function GroupingTool({
       if (lowStudents[i]) combinedStudents.push(lowStudents[i]);
     }
 
-    console.log('GroupingTool: Combined Students:', combinedStudents);
-
     let numGroups: number;
 
     if (groupingOption === 'byGroups') {
@@ -95,8 +85,6 @@ export default function GroupingTool({
     } else {
       numGroups = Math.ceil(students.length / studentsPerGroup);
     }
-
-    console.log('GroupingTool: Number of Groups:', numGroups);
 
     // Initialize empty groups
     const newGroups: Student[][] = Array.from({ length: numGroups }, () => []);
@@ -106,8 +94,6 @@ export default function GroupingTool({
       const groupIndex = index % numGroups;
       newGroups[groupIndex].push(student);
     });
-
-    console.log('GroupingTool: New Groups:', newGroups);
 
     // Initialize default group names
     const initialGroupNames: { [key: number]: string } = {};
@@ -119,11 +105,13 @@ export default function GroupingTool({
     setGroupingId(newGroupingId);
     setGroups(newGroups);
     setGroupNames(initialGroupNames);
-    setShowModal(true); // Display the modal with groups
-    setInputError(''); // Reset any previous error messages
+
+    // Start the animation
+    setAnimationPhase('shuffling');
+    setShowModal(true); // Display the modal with animation
+    setInputError('');
   };
 
-  // Function to save grouping history to localStorage
   const saveGroupingHistory = () => {
     if (currentClassId === null || groupingId === null) {
       console.error('GroupingTool: currentClassId or groupingId is null. Cannot save grouping history.');
@@ -151,10 +139,8 @@ export default function GroupingTool({
 
     const existingIndex = groupHistory.findIndex((entry) => entry.id === groupingId);
     if (existingIndex !== -1) {
-      // Update existing entry
       groupHistory[existingIndex] = newEntry;
     } else {
-      // Add new entry
       groupHistory.push(newEntry);
     }
 
@@ -163,22 +149,22 @@ export default function GroupingTool({
     console.log('GroupingTool: Grouping Entry:', newEntry);
   };
 
-  // Function to close the modal
   const closeModal = () => {
     if (groupingId !== null) {
       saveGroupingHistory();
-      onGroupingSaved(); // Notify parent to refresh GroupHistory
+      onGroupingSaved();
     }
     setShowModal(false);
     setGroupingId(null);
     setDraggedStudentId(null);
+    setAnimationPhase('idle'); // Reset animation phase
   };
 
-  // Effect to handle Escape key and body scroll
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setShowModal(false);
+        setAnimationPhase('idle');
       }
     };
 
@@ -193,12 +179,10 @@ export default function GroupingTool({
     };
   }, [showModal]);
 
-  // Function to handle drag start
   const handleDragStart = (studentId: number) => {
     setDraggedStudentId(studentId);
   };
 
-  // Function to handle drag end (drop)
   const handleDragEnd = (studentId: number, destinationGroupId: string) => {
     if (draggedStudentId === null) return;
 
@@ -217,7 +201,7 @@ export default function GroupingTool({
       return;
     }
 
-    // Clone the groups to avoid direct state mutation
+    // Clone the groups
     const newGroups = groups.map((group) => [...group]);
 
     // Remove the student from the source group
@@ -230,13 +214,11 @@ export default function GroupingTool({
     newGroups[destinationGroupIndex].push(movedStudent);
 
     setGroups(newGroups);
-    setDraggedStudentId(null); // Reset the dragged student ID
+    setDraggedStudentId(null);
   };
 
-  // Handle input changes with validation
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Allow only digits
     if (/^\d*$/.test(value)) {
       if (groupingOption === 'byGroups') {
         setGroupCountInput(value);
@@ -253,20 +235,17 @@ export default function GroupingTool({
           setStudentsPerGroup(parseInt(value, 10));
         }
       }
-      setInputError(''); // Reset error message on valid input
+      setInputError('');
     } else {
       setInputError('Please enter a valid number.');
     }
   };
 
-  // Function to handle group name changes
   const handleGroupNameChange = (groupIndex: number, newName: string) => {
     setGroupNames((prevNames) => ({
       ...prevNames,
       [groupIndex]: newName,
     }));
-    // Optionally, you can save immediately after name change
-    // saveGroupingHistory();
   };
 
   return (
@@ -281,7 +260,7 @@ export default function GroupingTool({
             onChange={() => {
               setGroupingOption('byGroups');
               setGroupCountInput('');
-              setGroupCount(2); // Reset to default
+              setGroupCount(2);
               setInputError('');
             }}
           />
@@ -295,7 +274,7 @@ export default function GroupingTool({
             onChange={() => {
               setGroupingOption('byStudents');
               setGroupCountInput('');
-              setStudentsPerGroup(4); // Reset to default
+              setStudentsPerGroup(4);
               setInputError('');
             }}
           />
@@ -324,7 +303,6 @@ export default function GroupingTool({
           Generate Groups
         </button>
       </div>
-      {/* Display error message if any */}
       {inputError && <p className="error-message">{inputError}</p>}
 
       {showModal && (
@@ -333,40 +311,48 @@ export default function GroupingTool({
             <button className="modal-close-btn" onClick={closeModal} aria-label="Close Modal">
               &times;
             </button>
-            <h2>Generated Groups</h2>
+            <h2>{animationPhase === 'completed' ? 'Generated Groups' : 'Generating Groups...'}</h2>
             <div className="groups-display">
-              {groups.map((group, groupIndex) => (
-                <Droppable
-                  key={groupIndex}
-                  id={`group-${groupIndex}`}
-                  onDrop={(studentId) => handleDragEnd(studentId, `group-${groupIndex}`)}
-                >
-                  <div className="group-card">
-                    {/* Editable Group Name */}
-                    <EditableGroupName
-                      groupIndex={groupIndex}
-                      groupName={groupNames[groupIndex]}
-                      onGroupNameChange={handleGroupNameChange}
-                    />
-                    <ul>
-                      {group.map((student) => (
-                        <DraggableStudent
-                          key={student.id}
-                          student={student}
-                          onDragStart={() => handleDragStart(student.id)}
-                          isDragging={draggedStudentId === student.id}
-                        />
-                      ))}
-                    </ul>
-                  </div>
-                </Droppable>
-              ))}
+              {animationPhase === 'completed' ? (
+                // Display final groups
+                groups.map((group, groupIndex) => (
+                  <Droppable
+                    key={groupIndex}
+                    id={`group-${groupIndex}`}
+                    onDrop={(studentId) => handleDragEnd(studentId, `group-${groupIndex}`)}
+                  >
+                    <div className="group-card">
+                      <EditableGroupName
+                        groupIndex={groupIndex}
+                        groupName={groupNames[groupIndex]}
+                        onGroupNameChange={handleGroupNameChange}
+                      />
+                      <ul>
+                        {group.map((student) => (
+                          <DraggableStudent
+                            key={student.id}
+                            student={student}
+                            onDragStart={() => handleDragStart(student.id)}
+                            isDragging={draggedStudentId === student.id}
+                          />
+                        ))}
+                      </ul>
+                    </div>
+                  </Droppable>
+                ))
+              ) : (
+                // Display shuffling animation
+                <ShufflingAnimation
+                  students={students}
+                  onAnimationComplete={() => setAnimationPhase('completed')}
+                />
+              )}
             </div>
           </div>
         </div>
       )}
 
-      {/* Inline Styles for GroupingTool (Alternatively, move to CSS module) */}
+      {/* Inline Styles */}
       <style jsx>{`
         .grouping-tool {
           margin-bottom: 2rem;
@@ -411,8 +397,8 @@ export default function GroupingTool({
         }
 
         .group-count input[type='text'].input-error {
-          border-color: #e74c3c; /* Red border for errors */
-          box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); /* Subtle red glow */
+          border-color: #e74c3c;
+          box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
         }
 
         .group-count input[type='text']::placeholder {
@@ -436,7 +422,7 @@ export default function GroupingTool({
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+          background-color: rgba(0, 0, 0, 0.7);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -446,15 +432,15 @@ export default function GroupingTool({
 
         .modal-content {
           background-color: var(--bg-color);
-          padding: 1rem; /* Increased padding for better content spacing */
+          padding: 1rem;
           border-radius: 8px;
-          max-width: 90vw; /* Use viewport width for better fit */
-          max-height: 90vh; /* Use viewport height to prevent overflow */
-          width: 800px; /* Keep a reasonable width */
+          max-width: 90vw;
+          max-height: 90vh;
+          width: 800px;
           position: relative;
           color: var(--text-color);
           cursor: default;
-          overflow-y: auto; /* Enable vertical scrolling if content overflows */
+          overflow-y: auto;
         }
 
         .modal-close-btn {
@@ -480,16 +466,16 @@ export default function GroupingTool({
         .groups-display {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.75rem; /* Reduced gap */
+          gap: 0.75rem;
           margin-top: 1rem;
-          justify-content: center; /* Center the groups */
+          justify-content: center;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
           .modal-content {
             width: 95vw;
-            padding: 0.75rem; /* Further reduced padding */
+            padding: 0.75rem;
           }
 
           .groups-display {
