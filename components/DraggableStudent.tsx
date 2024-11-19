@@ -1,26 +1,37 @@
 // components/DraggableStudent.tsx
-import { Student } from '../types';
+import React from 'react';
 
 interface DraggableStudentProps {
-  student: Student;
+  student: {
+    id: number;
+    name: string;
+    capabilityLevel: 'high' | 'medium' | 'low';
+    present: boolean;
+  };
   onDragStart: () => void;
   isDragging: boolean;
 }
 
-export default function DraggableStudent({ student, onDragStart, isDragging }: DraggableStudentProps) {
-  const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
-    onDragStart();
-    e.dataTransfer.setData('text/plain', student.id.toString());
-    e.dataTransfer.effectAllowed = 'move';
-  };
-
+const DraggableStudent: React.FC<DraggableStudentProps> = ({
+  student,
+  onDragStart,
+  isDragging,
+}) => {
   return (
     <li
-      draggable
-      onDragStart={handleDragStart}
       className={`draggable-student ${isDragging ? 'dragging' : ''}`}
+      draggable
+      onDragStart={(e) => {
+        onDragStart();
+        e.dataTransfer.setData('text/plain', student.id.toString());
+        e.dataTransfer.effectAllowed = 'move';
+      }}
+      aria-label={`Student ${student.name}`}
+      data-id={student.id} /* Added for potential future use */
     >
       {student.name}
     </li>
   );
-}
+};
+
+export default DraggableStudent;

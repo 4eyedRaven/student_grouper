@@ -11,3 +11,16 @@ export interface Class {
   name: string;
   students: Student[];
 }
+
+export interface GroupingHistoryEntry {
+  id: number;
+  timestamp: string; // ISO string
+  method: 'byGroups' | 'byStudents';
+  value: number; // Number of groups or students per group
+  numberOfStudents: number;
+  groups: {
+    id: number;
+    name: string;
+    students: Student[];
+  }[];
+}

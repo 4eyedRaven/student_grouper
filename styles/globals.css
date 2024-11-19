@@ -450,14 +450,17 @@ select:focus {
   opacity: 0.8;
 }
 
-.group-card.group-over {
-  border: 3px dashed var(--accent-color); /* Prominent dashed border */
-  box-shadow: 0 0 10px var(--accent-color); /* Optional: Add a glow effect */
+/* ===========================
+   11. Droppable Group Over Styles
+=========================== */
+.droppable.group-over .group-card {
+  border: 3px dashed var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* ===========================
-   11. Draggable Student Styles
+   12. Draggable Student Styles
 =========================== */
 .draggable-student {
   transition: background-color 0.2s, color 0.2s, opacity 0.2s;
@@ -471,7 +474,7 @@ select:focus {
 }
 
 /* ===========================
-   12. Editable Group Name Styles
+   13. Editable Group Name Styles
 =========================== */
 .group-name {
   cursor: pointer;
@@ -499,7 +502,7 @@ select:focus {
 }
 
 /* ===========================
-   13. Instructions Component Styles
+   14. Instructions Component Styles
 =========================== */
 .instructions {
   background-color: var(--border-color);
@@ -535,7 +538,7 @@ select:focus {
 }
 
 /* ===========================
-   14. Responsive Design
+   15. Responsive Design
 =========================== */
 @media (max-width: 768px) {
   .container {
@@ -544,7 +547,8 @@ select:focus {
 
   .class-list,
   .student-list,
-  .groups-display {
+  .groups-display,
+  .group-history-table {
     flex-direction: column;
   }
 
@@ -615,19 +619,62 @@ select:focus {
     margin-top: 1rem;
     justify-items: center;
   }
+
+  /* Adjust group-history-table for mobile */
+  .group-history-table th,
+  .group-history-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: invert();
+  }
 }
 
 /* ===========================
-   15. Additional Enhancements
+   16. Additional Enhancements
 =========================== */
-/* Smooth Transition for Group-Over State */
-.group-card.group-over {
-  border: 3px dashed var(--accent-color);
-  box-shadow: 0 0 10px var(--accent-color);
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-}
-
 /* Cursor for Droppable Area */
 .group-card {
   cursor: pointer;
+}
+
+.error-boundary {
+  padding: 2rem;
+  background-color: #ffdddd;
+  border: 1px solid #ff5c5c;
+  border-radius: 8px;
+  text-align: center;
+  color: #a94442;
+}
+
+/* ===========================
+   17. Group History Styles
+=========================== */
+.group-history {
+  margin-top: 2rem;
+}
+
+.group-history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.group-history-table th,
+.group-history-table td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.group-history-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.group-history-row:hover {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
 }

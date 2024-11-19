@@ -4,33 +4,37 @@ import Head from 'next/head';
 import ClassManager from '../components/ClassManager';
 import StudentManager from '../components/StudentManager';
 import GroupingTool from '../components/GroupingTool';
+import GroupHistory from '../components/GroupHistory';
 import Instructions from '../components/Instructions';
 import { Class, Student } from '../types';
 
 export default function Home() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [currentClassId, setCurrentClassId] = useState<number | null>(null);
+  const [groupHistoryRefreshKey, setGroupHistoryRefreshKey] = useState<number>(0); // New state
 
   useEffect(() => {
     const savedClasses = localStorage.getItem('classes');
     if (savedClasses) {
-      const parsedClasses: Class[] = JSON.parse(savedClasses);
-
-      // Assign default values for new properties if missing
-      const updatedClasses = parsedClasses.map((cls) => ({
-        ...cls,
-        students: cls.students.map((student) => ({
-          ...student,
-          capabilityLevel: student.capabilityLevel || 'medium', // Default capability level
-          present: student.present !== undefined ? student.present : true, // Default to present
-        })),
-      }));
-
-      setClasses(updatedClasses);
-
-      if (updatedClasses.length > 0) {
-        setCurrentClassId(updatedClasses[0].id);
-      } else {
+      try {
+        const parsedClasses: Class[] = JSON.parse(savedClasses);
+        const updatedClasses = parsedClasses.map((cls) => ({
+          ...cls,
+          students: cls.students.map((student) => ({
+            ...student,
+            capabilityLevel: student.capabilityLevel || 'medium',
+            present: student.present !== undefined ? student.present : true,
+          })),
+        }));
+        setClasses(updatedClasses);
+        if (updatedClasses.length > 0) {
+          setCurrentClassId(updatedClasses[0].id);
+        } else {
+          setCurrentClassId(null);
+        }
+      } catch (error) {
+        console.error('Home: Error parsing classes from localStorage:', error);
+        setClasses([]);
         setCurrentClassId(null);
       }
     }
@@ -63,7 +67,7 @@ export default function Home() {
         id: Date.now(),
         name,
         capabilityLevel,
-        present: true, // Student is present by default
+        present: true,
       };
       setClasses(
         classes.map((c) =>
@@ -102,6 +106,11 @@ export default function Home() {
     }
   };
 
+  // Function to trigger group history refresh
+  const triggerGroupHistoryRefresh = () => {
+    setGroupHistoryRefreshKey((prevKey) => prevKey + 1);
+  };
+
   return (
     <div className="container">
       <Head>
@@ -134,7 +143,16 @@ export default function Home() {
               onRemoveStudent={removeStudent}
               onToggleExclusion={toggleStudentExclusion}
             />
-            <GroupingTool students={currentClass.students.filter((s) => s.present)} />
+            <GroupingTool
+              students={currentClass.students.filter((s) => s.present)}
+              currentClassId={currentClassId}
+              onGroupingSaved={triggerGroupHistoryRefresh} // Pass the refresh trigger
+            />
+            <GroupHistory
+              currentClassId={currentClassId}
+              className={currentClass.name}
+              refreshKey={groupHistoryRefreshKey} // Pass the refresh key
+            />
           </>
         )}
       </main>

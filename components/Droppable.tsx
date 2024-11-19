@@ -1,52 +1,43 @@
 // components/Droppable.tsx
-import { useState } from 'react';
-import { Student } from '../types';
+import React, { useState } from 'react';
 
 interface DroppableProps {
   id: string;
-  children: React.ReactNode;
   onDrop: (studentId: number) => void;
+  children: React.ReactNode;
 }
 
-export default function Droppable({ id, children, onDrop }: DroppableProps) {
-  const [isOver, setIsOver] = useState(false); // State to track drag-over
+const Droppable: React.FC<DroppableProps> = ({ id, onDrop, children }) => {
+  const [isOver, setIsOver] = useState(false);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    // Visual feedback is handled via state
-  };
-
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsOver(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    // To prevent flickering when dragging over child elements
-    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-      setIsOver(false);
-    }
+  const handleDragLeave = () => {
+    setIsOver(false);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    const studentId = Number(e.dataTransfer.getData('text/plain'));
+    onDrop(studentId);
     setIsOver(false);
-    const studentId = parseInt(e.dataTransfer.getData('text/plain'), 10);
-    if (!isNaN(studentId)) {
-      onDrop(studentId);
-    }
   };
 
   return (
     <div
-      className={`group-card ${isOver ? 'group-over' : ''}`}
+      id={id}
+      className={`droppable ${isOver ? 'group-over' : ''}`}
       onDragOver={handleDragOver}
-      onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      aria-label="Droppable Group"
     >
       {children}
     </div>
   );
-}
+};
+
+export default Droppable;
