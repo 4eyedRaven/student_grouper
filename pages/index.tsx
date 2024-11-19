@@ -7,7 +7,6 @@ import GroupingTool from '../components/GroupingTool';
 import Instructions from '../components/Instructions';
 import { Class, Student } from '../types';
 
-// pages/index.tsx
 export default function Home() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [currentClassId, setCurrentClassId] = useState<number | null>(null);
@@ -123,10 +122,10 @@ export default function Home() {
           onRemoveClass={removeClass}
           onSelectClass={setCurrentClassId}
         />
-        
+
         {/* Display Instructions if no classes are present */}
         {classes.length === 0 && <Instructions />}
-        
+
         {currentClass && (
           <>
             <StudentManager

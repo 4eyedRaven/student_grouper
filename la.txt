@@ -1,0 +1,1903 @@
+--- Start of .eslintrc.json ---
+{
+  "extends": ["next/core-web-vitals", "next/typescript"]
+}
+
+--- End of .eslintrc.json ---
+
+--- Start of .gitignore ---
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files (can opt-in for commiting if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts 
+--- End of .gitignore ---
+
+--- Start of LICENSE ---
+MIT License
+
+Copyright (c) 2024 4eyedRaven
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--- End of LICENSE ---
+
+--- Start of README.md ---
+
+# Student Grouping App
+
+The Student Grouping App is a web application designed for teachers to manage classes and group students effectively. It allows teachers to create classes, add students with varying capability levels, and generate balanced student groups based on specified criteria.
+
+**The app is available for testing at [https://student-grouper.vercel.app/](https://student-grouper.vercel.app/).**
+
+## Features
+
+- **Class Management**
+  - Add new classes.
+  - Delete existing classes.
+  - Switch between different classes.
+  
+- **Student Management**
+  - Add students to a class with specified capability levels (High, Medium, Low).
+  - Mark students as present or absent using a “Present” toggle.
+  - Remove students from a class.
+  
+- **Grouping Tool**
+  - Generate student groups based on:
+    - Number of groups.
+    - Number of students per group.
+  - Ensure groups are numerically balanced and have a mix of capability levels.
+  - Display generated groups in a modal dialog (lightbox) for easy viewing.
+  - Close the modal by clicking outside, clicking the close button, or pressing the Escape key.
+
+## Technologies Used
+
+- **Framework**: Next.js (React framework)
+- **Language**: TypeScript
+- **Styling**: CSS with custom variables
+- **State Management**: React hooks (useState, useEffect)
+- **Data Persistence**: localStorage for saving classes and students
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js**: Make sure you have Node.js installed (version 14 or later).
+- **npm**: Comes with Node.js. Alternatively, you can use yarn or pnpm.
+
+### Installation
+
+1. **Clone the Repository**
+    ```bash
+    git clone https://github.com/4eyedRaven/student_grouper.git
+    cd student-grouping-app
+    ```
+
+2. **Install Dependencies**
+
+   Using npm:
+    ```bash
+    npm install
+    ```
+
+   Or using yarn:
+    ```bash
+    yarn install
+    ```
+
+   Or using pnpm:
+    ```bash
+    pnpm install
+    ```
+
+### Running the Development Server
+
+Start the development server:
+```bash
+npm run dev
+```
+Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+
+## Usage
+
+### Class Management
+
+- **Add a New Class**
+  - Enter the class name in the “New class name” input field.
+  - Press Enter or click the + button.
+- **Switch Between Classes**
+  - Click on a class name in the list to select it.
+- **Delete a Class**
+  - Click the × button next to the class name.
+  - Confirm deletion if prompted.
+
+### Student Management
+
+- **Add a New Student**
+  - Enter the student’s name in the “New student name” input field.
+  - Select the capability level from the dropdown (High, Medium, Low).
+  - Press Enter or click the Add Student button.
+- **Mark Student as Present/Absent**
+  - Use the “Present” checkbox next to the student’s name to toggle their attendance.
+- **Remove a Student**
+  - Click the Remove button in the “Actions” column next to the student’s name.
+
+### Grouping Students
+
+- **Select Grouping Criteria**
+  - Choose between:
+    - By Number of Groups: Specify how many groups to create.
+    - By Students per Group: Specify how many students should be in each group.
+- **Generate Groups**
+  - Click the Generate Groups button.
+- **View Generated Groups**
+  - The groups will appear in a modal dialog.
+  - Review the groups, which are balanced by number and capability levels.
+- **Close the Modal**
+  - Click the × button in the top-right corner.
+  - Click outside the modal content.
+  - Press the Escape key.
+
+### Drag-and-Drop Group Editing
+
+After generating groups, you can manually adjust them:
+
+- **Drag Students Between Groups:**
+  - Click and hold on a student's name to drag them to a different group.
+- **Real-Time Updates:**
+  - The group lists update immediately to reflect changes.
+
+## Project Structure
+
+```
+student-grouping-app/
+├── components/
+│   ├── ClassManager.tsx
+│   ├── StudentManager.tsx
+│   └── GroupingTool.tsx
+├── pages/
+│   ├── _app.tsx
+│   └── index.tsx
+├── styles/
+│   └── globals.css
+├── types.ts
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
+- **components/**: Contains React components for class management, student management, and the grouping tool.
+- **pages/**: Next.js pages, including the main index.tsx file.
+- **styles/**: Global CSS styles.
+- **types.ts**: TypeScript interfaces for Class and Student.
+- **package.json**: Project metadata and dependencies.
+- **tsconfig.json**: TypeScript configuration.
+
+## Available Scripts
+
+In the project directory, you can run:
+
+- `npm run dev`: Runs the app in development mode.
+- `npm run build`: Builds the app for production.
+- `npm run start`: Starts the production server.
+- `npm run lint`: Runs ESLint to check for linting errors.
+
+## Dependencies
+
+- `react`: "^18.x"
+- `react-dom`: "^18.x"
+- `next`: "^12.x" or later
+- `typescript`: "^4.x" (as a dev dependency)
+- `@types/react`: "^17.x" (as a dev dependency)
+- `@types/react-dom`: "^17.x" (as a dev dependency)
+- `eslint`: "^7.x" (as a dev dependency)
+- `eslint-config-next`: "^11.x" (as a dev dependency)
+
+## Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. **Fork the Repository**
+2. **Create a Feature Branch**
+    ```bash
+    git checkout -b feature/YourFeature
+    ```
+
+3. **Commit Your Changes**
+    ```bash
+    git commit -m "Add your message"
+    ```
+
+4. **Push to the Branch**
+    ```bash
+    git push origin feature/YourFeature
+    ```
+
+5. **Open a Pull Request**
+
+## License
+
+This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- Thanks to all contributors and users who have provided feedback and suggestions (my wife).
+- Built with Next.js and TypeScript.
+
+--- End of README.md ---
+
+--- Start of app_/layout_.tsx ---
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {children}
+      </body>
+    </html>
+  );
+}
+
+--- End of app_/layout_.tsx ---
+
+--- Start of app_/page.module_.css ---
+.page {
+  --gray-rgb: 0, 0, 0;
+  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+
+  --button-primary-hover: #383838;
+  --button-secondary-hover: #f2f2f2;
+
+  display: grid;
+  grid-template-rows: 20px 1fr 20px;
+  align-items: center;
+  justify-items: center;
+  min-height: 100svh;
+  padding: 80px;
+  gap: 64px;
+  font-family: var(--font-geist-sans);
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    --gray-rgb: 255, 255, 255;
+    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+
+    --button-primary-hover: #ccc;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  grid-row-start: 2;
+}
+
+.main ol {
+  font-family: var(--font-geist-mono);
+  padding-left: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: -0.01em;
+  list-style-position: inside;
+}
+
+.main li:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+
+.main code {
+  font-family: inherit;
+  background: var(--gray-alpha-100);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.ctas {
+  display: flex;
+  gap: 16px;
+}
+
+.ctas a {
+  appearance: none;
+  border-radius: 128px;
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+a.primary {
+  background: var(--foreground);
+  color: var(--background);
+  gap: 8px;
+}
+
+a.secondary {
+  border-color: var(--gray-alpha-200);
+  min-width: 180px;
+}
+
+.footer {
+  grid-row-start: 3;
+  display: flex;
+  gap: 24px;
+}
+
+.footer a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer img {
+  flex-shrink: 0;
+}
+
+/* Enable hover only on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+  a.primary:hover {
+    background: var(--button-primary-hover);
+    border-color: transparent;
+  }
+
+  a.secondary:hover {
+    background: var(--button-secondary-hover);
+    border-color: transparent;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 32px;
+    padding-bottom: 80px;
+  }
+
+  .main {
+    align-items: center;
+  }
+
+  .main ol {
+    text-align: center;
+  }
+
+  .ctas {
+    flex-direction: column;
+  }
+
+  .ctas a {
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
+  }
+
+  a.secondary {
+    min-width: auto;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .logo {
+    filter: invert();
+  }
+}
+
+--- End of app_/page.module_.css ---
+
+--- Start of components/ClassManager.tsx ---
+// components/ClassManager.tsx
+import { useState } from 'react';
+import { Class } from '../types';
+
+interface ClassManagerProps {
+  classes: Class[];
+  currentClassId: number | null;
+  onAddClass: (className: string) => void;
+  onRemoveClass: (classId: number) => void;
+  onSelectClass: (selectedClassId: number) => void;
+}
+
+export default function ClassManager({
+  classes,
+  currentClassId,
+  onAddClass,
+  onRemoveClass,
+  onSelectClass,
+}: ClassManagerProps) {
+  const [newClassName, setNewClassName] = useState('');
+
+  const handleAddClass = () => {
+    if (newClassName.trim()) {
+      onAddClass(newClassName.trim());
+      setNewClassName('');
+    }
+  };
+
+  // **Add this function to handle the Enter key**
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddClass();
+    }
+  };
+
+  return (
+    <div className="class-manager">
+      <h2>Classes</h2>
+      <div className="class-list">
+        {classes.map((c) => (
+          <div
+            key={c.id}
+            className={`class-item ${currentClassId === c.id ? 'active' : ''}`}
+            onClick={() => onSelectClass(c.id)}
+          >
+            {c.name}
+            <button
+              className="remove-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemoveClass(c.id);
+              }}
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="add-class">
+        <input
+          type="text"
+          value={newClassName}
+          onChange={(e) => setNewClassName(e.target.value)}
+          onKeyDown={handleKeyDown} // **Add this line**
+          placeholder="New class name"
+        />
+        <button onClick={handleAddClass}>+</button>
+      </div>
+    </div>
+  );
+}
+--- End of components/ClassManager.tsx ---
+
+--- Start of components/DraggableStudent.tsx ---
+// components/DraggableStudent.tsx
+import { Student } from '../types';
+
+interface DraggableStudentProps {
+  student: Student;
+  onDragStart: () => void;
+  isDragging: boolean;
+}
+
+export default function DraggableStudent({ student, onDragStart, isDragging }: DraggableStudentProps) {
+  const handleDragStart = (e: React.DragEvent<HTMLLIElement>) => {
+    onDragStart();
+    e.dataTransfer.setData('text/plain', student.id.toString());
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  return (
+    <li
+      draggable
+      onDragStart={handleDragStart}
+      className={`draggable-student ${isDragging ? 'dragging' : ''}`}
+    >
+      {student.name}
+    </li>
+  );
+}
+--- End of components/DraggableStudent.tsx ---
+
+--- Start of components/Droppable.tsx ---
+// components/Droppable.tsx
+import { useState } from 'react';
+import { Student } from '../types';
+
+interface DroppableProps {
+  id: string;
+  children: React.ReactNode;
+  onDrop: (studentId: number) => void;
+}
+
+export default function Droppable({ id, children, onDrop }: DroppableProps) {
+  const [isOver, setIsOver] = useState(false); // State to track drag-over
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // Visual feedback is handled via state
+  };
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    // To prevent flickering when dragging over child elements
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsOver(false);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsOver(false);
+    const studentId = parseInt(e.dataTransfer.getData('text/plain'), 10);
+    if (!isNaN(studentId)) {
+      onDrop(studentId);
+    }
+  };
+
+  return (
+    <div
+      className={`group-card ${isOver ? 'group-over' : ''}`}
+      onDragOver={handleDragOver}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      {children}
+    </div>
+  );
+}
+--- End of components/Droppable.tsx ---
+
+--- Start of components/GroupingTool.tsx ---
+// components/GroupingTool.tsx
+import { useState, useEffect } from 'react';
+import { Student } from '../types';
+import Droppable from './Droppable';
+import DraggableStudent from './DraggableStudent';
+
+interface GroupingToolProps {
+  students: Student[];
+}
+
+export default function GroupingTool({ students }: GroupingToolProps) {
+  const [groupingOption, setGroupingOption] = useState<'byGroups' | 'byStudents'>('byGroups');
+  const [groupCountInput, setGroupCountInput] = useState<string>(''); // Controlled input value as string
+  const [groupCount, setGroupCount] = useState<number>(2); // Parsed numerical value
+  const [groups, setGroups] = useState<Student[][]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [draggedStudentId, setDraggedStudentId] = useState<number | null>(null); // Tracks the dragged student
+  const [inputError, setInputError] = useState<string>(''); // Error message for invalid input
+
+  // Function to generate groups
+  const generateGroups = () => {
+    console.log('Generate Groups button clicked.');
+
+    if (students.length === 0) {
+      alert('No students available to group.');
+      return;
+    }
+
+    // Validate groupCount
+    if (!Number.isInteger(groupCount) || groupCount < 1) {
+      setInputError('Please enter a valid number of groups.');
+      return;
+    }
+
+    // Separate students by capability level
+    const highStudents = students.filter((s) => s.capabilityLevel === 'high');
+    const mediumStudents = students.filter((s) => s.capabilityLevel === 'medium');
+    const lowStudents = students.filter((s) => s.capabilityLevel === 'low');
+
+    console.log('High Students:', highStudents);
+    console.log('Medium Students:', mediumStudents);
+    console.log('Low Students:', lowStudents);
+
+    // Shuffle each capability group to ensure randomness
+    const shuffle = (array: Student[]) => array.sort(() => Math.random() - 0.5);
+    shuffle(highStudents);
+    shuffle(mediumStudents);
+    shuffle(lowStudents);
+
+    console.log('Shuffled High Students:', highStudents);
+    console.log('Shuffled Medium Students:', mediumStudents);
+    console.log('Shuffled Low Students:', lowStudents);
+
+    // Combine all students, interleaving capability levels for balance
+    const combinedStudents: Student[] = [];
+    const maxLength = Math.max(highStudents.length, mediumStudents.length, lowStudents.length);
+    for (let i = 0; i < maxLength; i++) {
+      if (highStudents[i]) combinedStudents.push(highStudents[i]);
+      if (mediumStudents[i]) combinedStudents.push(mediumStudents[i]);
+      if (lowStudents[i]) combinedStudents.push(lowStudents[i]);
+    }
+
+    console.log('Combined Students:', combinedStudents);
+
+    let numGroups: number;
+
+    if (groupingOption === 'byGroups') {
+      numGroups = groupCount;
+      if (numGroups < 1) {
+        setInputError('Number of groups must be at least 1.');
+        return;
+      }
+    } else {
+      const studentsPerGroup = groupCount;
+      if (studentsPerGroup < 1) {
+        setInputError('Number of students per group must be at least 1.');
+        return;
+      }
+      numGroups = Math.ceil(students.length / studentsPerGroup);
+    }
+
+    console.log('Number of Groups:', numGroups);
+
+    // Initialize empty groups
+    const newGroups: Student[][] = Array.from({ length: numGroups }, () => []);
+
+    // Distribute students into groups in a round-robin fashion
+    combinedStudents.forEach((student, index) => {
+      const groupIndex = index % numGroups;
+      newGroups[groupIndex].push(student);
+    });
+
+    console.log('New Groups:', newGroups);
+
+    setGroups(newGroups);
+    setShowModal(true); // Display the modal with groups
+    setInputError(''); // Reset any previous error messages
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setShowModal(false);
+      }
+    };
+
+    if (showModal) {
+      document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showModal]);
+
+  const handleDragStart = (student: Student) => {
+    setDraggedStudentId(student.id); // Set the dragged student's ID
+  };
+
+  const handleDragEnd = (studentId: number, destinationGroupId: string) => {
+    if (draggedStudentId === null) return;
+
+    // Prevent moving to the same group
+    const sourceGroupIndex = groups.findIndex((group) =>
+      group.some((s) => s.id === draggedStudentId)
+    );
+    const destinationGroupIndex = parseInt(destinationGroupId.split('-')[1], 10);
+
+    if (
+      sourceGroupIndex === -1 ||
+      destinationGroupIndex === -1 ||
+      sourceGroupIndex === destinationGroupIndex
+    ) {
+      setDraggedStudentId(null);
+      return;
+    }
+
+    // Clone the groups to avoid direct state mutation
+    const newGroups = groups.map((group) => [...group]);
+
+    // Remove the student from the source group
+    const [movedStudent] = newGroups[sourceGroupIndex].splice(
+      newGroups[sourceGroupIndex].findIndex((s) => s.id === draggedStudentId),
+      1
+    );
+
+    // Add the student to the destination group
+    newGroups[destinationGroupIndex].push(movedStudent);
+
+    setGroups(newGroups);
+    setDraggedStudentId(null); // Reset the dragged student ID
+  };
+
+  // Handle input changes with validation
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow only digits
+    if (/^\d*$/.test(value)) {
+      setGroupCountInput(value);
+      if (value === '') {
+        setGroupCount(0);
+      } else {
+        setGroupCount(parseInt(value, 10));
+      }
+      setInputError(''); // Reset error message on valid input
+    } else {
+      setInputError('Please enter a valid number.');
+    }
+  };
+
+  return (
+    <div className="grouping-tool">
+      <h2>Grouping Tool</h2>
+      <div className="grouping-options">
+        <label>
+          <input
+            type="radio"
+            value="byGroups"
+            checked={groupingOption === 'byGroups'}
+            onChange={() => {
+              setGroupingOption('byGroups');
+              setGroupCountInput('');
+              setGroupCount(2); // Reset to default
+              setInputError('');
+            }}
+          />
+          By Number of Groups
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="byStudents"
+            checked={groupingOption === 'byStudents'}
+            onChange={() => {
+              setGroupingOption('byStudents');
+              setGroupCountInput('');
+              setGroupCount(Math.ceil(students.length / 2)); // Example default
+              setInputError('');
+            }}
+          />
+          By Students per Group
+        </label>
+      </div>
+      <div className="group-count">
+        <input
+          type="text"
+          value={groupCountInput}
+          onChange={handleInputChange}
+          placeholder={
+            groupingOption === 'byGroups'
+              ? 'Number of Groups'
+              : 'Number of Students per Group'
+          }
+          aria-label={
+            groupingOption === 'byGroups'
+              ? 'Number of Groups'
+              : 'Number of Students per Group'
+          }
+          className={inputError ? 'input-error' : ''}
+        />
+        <button onClick={generateGroups}>Generate Groups</button>
+      </div>
+      {/* Display error message if any */}
+      {inputError && <p className="error-message">{inputError}</p>}
+
+      {showModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={closeModal}>
+              &times;
+            </button>
+            <h2>Generated Groups</h2>
+            <div className="groups-display">
+              {groups.map((group, groupIndex) => (
+                <Droppable
+                  key={groupIndex}
+                  id={`group-${groupIndex}`}
+                  onDrop={(studentId) => handleDragEnd(studentId, `group-${groupIndex}`)}
+                >
+                  <div className="group-card">
+                    <h3>Group {groupIndex + 1}</h3>
+                    <ul>
+                      {group.map((student) => (
+                        <DraggableStudent
+                          key={student.id}
+                          student={student}
+                          onDragStart={() => handleDragStart(student)}
+                          isDragging={draggedStudentId === student.id} // Pass isDragging prop
+                        />
+                      ))}
+                    </ul>
+                  </div>
+                </Droppable>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+--- End of components/GroupingTool.tsx ---
+
+--- Start of components/Instructions.tsx ---
+// components/Instructions.tsx
+import React from 'react';
+
+const Instructions: React.FC = () => {
+  return (
+    <div className="instructions">
+      <h2>Welcome to the Student Grouping App!</h2>
+      <p>
+        This application helps you manage your classes and students, and generate balanced groups effortlessly. Here's how to get started:
+      </p>
+      <ol>
+        <li><strong>Add a Class:</strong> Enter the name of your class and click the "+" button to create a new class.</li>
+        <li><strong>Add Students:</strong> Select the class you've created, enter student names along with their capability levels, and add them to the class.</li>
+        <li><strong>Generate Groups:</strong> Use the "Generate Groups" feature to create balanced groups based on your selected criteria.</li>
+        <li><strong>Drag and Drop:</strong> Easily rearrange students between groups using the drag-and-drop functionality.</li>
+      </ol>
+      <p>
+        Start by adding your first class to unlock all features!
+      </p>
+    </div>
+  );
+};
+
+export default Instructions;
+--- End of components/Instructions.tsx ---
+
+--- Start of components/StudentManager.tsx ---
+// components/StudentManager.tsx
+import { useState } from 'react';
+import { Student } from '../types';
+
+interface StudentManagerProps {
+  students: Student[];
+  onAddStudent: (name: string, capabilityLevel: 'high' | 'medium' | 'low') => void;
+  onRemoveStudent: (id: number) => void;
+  onToggleExclusion: (id: number) => void;
+}
+
+export default function StudentManager({
+  students,
+  onAddStudent,
+  onRemoveStudent,
+  onToggleExclusion,
+}: StudentManagerProps) {
+  const [newStudentName, setNewStudentName] = useState('');
+  const [newStudentCapability, setNewStudentCapability] = useState<'high' | 'medium' | 'low'>('medium');
+
+  const handleAddStudent = () => {
+    if (newStudentName.trim()) {
+      onAddStudent(newStudentName.trim(), newStudentCapability);
+      setNewStudentName('');
+      setNewStudentCapability('medium');
+    }
+  };
+
+  // **Add this function to handle the Enter key**
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddStudent();
+    }
+  };
+
+  return (
+    <div className="student-manager">
+      <h2>Students</h2>
+      <div className="student-list">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Present</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {students.map((student) => (
+              <tr key={student.id} className={!student.present ? 'excluded' : ''}>
+                <td>{student.name}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={student.present}
+                    onChange={() => onToggleExclusion(student.id)}
+                  />
+                </td>
+                <td>
+                  <button className="remove-btn" onClick={() => onRemoveStudent(student.id)}>
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="add-student">
+        <input
+          type="text"
+          value={newStudentName}
+          onChange={(e) => setNewStudentName(e.target.value)}
+          onKeyDown={handleKeyDown} // **Add this line**
+          placeholder="New student name"
+        />
+        <select
+          value={newStudentCapability}
+          onChange={(e) => setNewStudentCapability(e.target.value as 'high' | 'medium' | 'low')}
+        >
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <button onClick={handleAddStudent}>Add Student</button>
+      </div>
+    </div>
+  );
+}
+--- End of components/StudentManager.tsx ---
+
+--- Start of next.config.js ---
+// next.config.js
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    reactStrictMode: true,
+    // Add other configurations as needed
+  };
+  
+  module.exports = nextConfig;
+--- End of next.config.js ---
+
+--- Start of package.json ---
+{
+  "name": "student-grouping-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "^6.1.0",
+    "@dnd-kit/sortable": "^8.0.0",
+    "next": "13.4.7",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "eslint": "^8.46.0",
+    "eslint-config-next": "13.4.7",
+    "typescript": "^5.2.2"
+  }
+}
+
+--- End of package.json ---
+
+--- Start of pages/_app.tsx ---
+import '../styles/globals.css'
+import type { AppProps } from 'next/app'
+
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
+
+export default MyApp
+--- End of pages/_app.tsx ---
+
+--- Start of pages/index.tsx ---
+// pages/index.tsx
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
+import ClassManager from '../components/ClassManager';
+import StudentManager from '../components/StudentManager';
+import GroupingTool from '../components/GroupingTool';
+import Instructions from '../components/Instructions';
+import { Class, Student } from '../types';
+
+// pages/index.tsx
+export default function Home() {
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [currentClassId, setCurrentClassId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const savedClasses = localStorage.getItem('classes');
+    if (savedClasses) {
+      const parsedClasses: Class[] = JSON.parse(savedClasses);
+
+      // Assign default values for new properties if missing
+      const updatedClasses = parsedClasses.map((cls) => ({
+        ...cls,
+        students: cls.students.map((student) => ({
+          ...student,
+          capabilityLevel: student.capabilityLevel || 'medium', // Default capability level
+          present: student.present !== undefined ? student.present : true, // Default to present
+        })),
+      }));
+
+      setClasses(updatedClasses);
+
+      if (updatedClasses.length > 0) {
+        setCurrentClassId(updatedClasses[0].id);
+      } else {
+        setCurrentClassId(null);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('classes', JSON.stringify(classes));
+  }, [classes]);
+
+  const currentClass = classes.find((c) => c.id === currentClassId) || null;
+
+  const addClass = (className: string) => {
+    const newClass: Class = { id: Date.now(), name: className, students: [] };
+    setClasses([...classes, newClass]);
+    setCurrentClassId(newClass.id);
+  };
+
+  const removeClass = (classId: number) => {
+    const updatedClasses = classes.filter((c) => c.id !== classId);
+    setClasses(updatedClasses);
+
+    if (currentClassId === classId) {
+      setCurrentClassId(updatedClasses.length > 0 ? updatedClasses[0].id : null);
+    }
+  };
+
+  const addStudent = (name: string, capabilityLevel: 'high' | 'medium' | 'low') => {
+    if (currentClassId !== null) {
+      const newStudent: Student = {
+        id: Date.now(),
+        name,
+        capabilityLevel,
+        present: true, // Student is present by default
+      };
+      setClasses(
+        classes.map((c) =>
+          c.id === currentClassId ? { ...c, students: [...c.students, newStudent] } : c
+        )
+      );
+    }
+  };
+
+  const removeStudent = (studentId: number) => {
+    if (currentClassId !== null) {
+      setClasses(
+        classes.map((c) =>
+          c.id === currentClassId
+            ? { ...c, students: c.students.filter((s) => s.id !== studentId) }
+            : c
+        )
+      );
+    }
+  };
+
+  const toggleStudentExclusion = (studentId: number) => {
+    if (currentClassId !== null) {
+      setClasses(
+        classes.map((c) =>
+          c.id === currentClassId
+            ? {
+                ...c,
+                students: c.students.map((s) =>
+                  s.id === studentId ? { ...s, present: !s.present } : s
+                ),
+              }
+            : c
+        )
+      );
+    }
+  };
+
+  return (
+    <div className="container">
+      <Head>
+        <title>Student Grouping App</title>
+        <meta
+          name="description"
+          content="A tool for teachers to manage classes and group students"
+        />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main>
+        <h1>Student Grouping App</h1>
+        <ClassManager
+          classes={classes}
+          currentClassId={currentClassId}
+          onAddClass={addClass}
+          onRemoveClass={removeClass}
+          onSelectClass={setCurrentClassId}
+        />
+        
+        {/* Display Instructions if no classes are present */}
+        {classes.length === 0 && <Instructions />}
+        
+        {currentClass && (
+          <>
+            <StudentManager
+              students={currentClass.students}
+              onAddStudent={addStudent}
+              onRemoveStudent={removeStudent}
+              onToggleExclusion={toggleStudentExclusion}
+            />
+            <GroupingTool students={currentClass.students.filter((s) => s.present)} />
+          </>
+        )}
+      </main>
+    </div>
+  );
+}
+--- End of pages/index.tsx ---
+
+--- Start of public/file.svg ---
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+--- End of public/file.svg ---
+
+--- Start of public/globe.svg ---
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+--- End of public/globe.svg ---
+
+--- Start of public/next.svg ---
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+--- End of public/next.svg ---
+
+--- Start of public/vercel.svg ---
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+--- End of public/vercel.svg ---
+
+--- Start of public/window.svg ---
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+--- End of public/window.svg ---
+
+--- Start of styles/globals.css ---
+/* styles/globals.css */
+
+/* ===========================
+   1. CSS Variables
+=========================== */
+:root {
+  /* Color Palette */
+  --bg-color: #1a1a1a;
+  --text-color: #ffffff;
+  --primary-color: #4a90e2;
+  --secondary-color: #50e3c2;
+  --accent-color: #f5a623;
+  --border-color: #333333;
+
+  /* Font Variables */
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
+
+/* ===========================
+   2. Global Styles
+=========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-geist-sans);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem; /* Reduced padding */
+}
+
+/* ===========================
+   3. Typography
+=========================== */
+h1,
+h2,
+h3 {
+  color: var(--primary-color);
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   4. Buttons
+=========================== */
+button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, opacity 0.3s ease;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ===========================
+   5. Inputs and Forms
+=========================== */
+input[type='text'],
+input[type='number'],
+select {
+  background-color: var(--border-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+input[type='text']::placeholder,
+input[type='number']::placeholder {
+  color: #cccccc;
+}
+
+input[type='checkbox'] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* ===========================
+   6. Class Manager Styles
+=========================== */
+.class-manager {
+  margin-bottom: 2rem;
+}
+
+.class-manager h2 {
+  margin-bottom: 1rem;
+}
+
+.class-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.class-item {
+  background-color: var(--border-color);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.class-item.active {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+}
+
+.class-item:hover {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+}
+
+.remove-btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+}
+
+.remove-btn:hover {
+  color: var(--accent-color);
+}
+
+/* ====== Updated Styles for .add-class ====== */
+.add-class {
+  display: flex;
+  gap: 0.75rem; /* Increased gap for better spacing */
+  margin-top: 1rem; /* Space above the add-class container */
+}
+
+.add-class input[type='text'] {
+  flex: 1; /* Allows the input to take up available space */
+  padding: 0.5rem; /* Consistent padding */
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-class input[type='text'].input-error {
+  border-color: #e74c3c; /* Red border for errors */
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); /* Subtle red glow */
+}
+
+.add-class input[type='text']::placeholder {
+  color: #cccccc;
+}
+
+.add-class button {
+  padding: 0.5rem 1.2rem; /* Adjusted padding for better spacing */
+  font-size: 1.2rem; /* Ensures the "+" is adequately sized */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===========================
+   7. Student Manager Styles
+=========================== */
+.student-manager {
+  margin-bottom: 2rem;
+}
+
+.student-manager h2 {
+  margin-bottom: 1rem;
+}
+
+.student-list {
+  margin-bottom: 1rem;
+}
+
+.student-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.student-list th,
+.student-list td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  font-size: 0.95rem; /* Slightly smaller font for better fit */
+}
+
+.student-list th {
+  background-color: var(--border-color);
+}
+
+.student-list tr.excluded td {
+  opacity: 0.5;
+}
+
+.student-list tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.student-list .remove-btn {
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.student-list .remove-btn:hover {
+  color: var(--accent-color);
+}
+
+.add-student {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.add-student input[type='text'],
+.add-student select {
+  flex: 1;
+}
+
+.add-student button {
+  flex-shrink: 0;
+}
+
+/* ===========================
+   8. Grouping Tool Styles
+=========================== */
+.grouping-tool {
+  margin-bottom: 2rem;
+}
+
+.grouping-tool h2 {
+  margin-bottom: 1rem;
+}
+
+.grouping-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.grouping-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.grouping-options input[type='radio'] {
+  cursor: pointer;
+}
+
+.group-count {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.group-count input[type='text'] {
+  width: 200px;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: var(--border-color);
+  color: var(--text-color);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.group-count input[type='text'].input-error {
+  border-color: #e74c3c; /* Red border for errors */
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5); /* Subtle red glow */
+}
+
+.group-count input[type='text']::placeholder {
+  color: #cccccc;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.grouping-tool button {
+  padding: 0.5rem 1rem;
+}
+
+/* ===========================
+   9. Modal Styles
+=========================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.modal-content {
+  background-color: var(--bg-color);
+  padding: 0.75rem; /* Further reduced padding */
+  border-radius: 8px;
+  max-width: 90vw; /* Use viewport width for better fit */
+  max-height: 90vh; /* Use viewport height to prevent overflow */
+  width: 800px; /* Keep a reasonable width */
+  position: relative;
+  color: var(--text-color);
+  cursor: default;
+  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  color: var(--accent-color);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.groups-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* Reduced gap */
+  margin-top: 1rem;
+  justify-content: center; /* Center the groups */
+}
+
+/* ===========================
+   10. Group Card Styles
+=========================== */
+.group-card {
+  background-color: var(--border-color);
+  padding: 0.3rem; /* Further reduced padding */
+  border: 1px solid var(--border-color);
+  border-radius: 6px; /* Slightly reduced radius */
+  min-width: 120px; /* Further reduced min-width */
+  transition: background-color 0.2s, border 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.group-card:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.group-card h3 {
+  margin-top: 0;
+  color: var(--accent-color);
+  font-size: 0.95rem; /* Further reduced font size */
+}
+
+.group-card ul {
+  list-style-type: none;
+  padding: 0;
+  min-height: 35px; /* Further reduced min-height */
+}
+
+.group-card li {
+  background-color: var(--border-color);
+  margin-bottom: 0.3rem; /* Further reduced margin */
+  padding: 0.25rem; /* Further reduced padding */
+  border-radius: 4px;
+  cursor: grab;
+  user-select: none;
+  transition: background-color 0.2s, opacity 0.2s;
+  font-size: 0.8rem; /* Further reduced font size */
+}
+
+.group-card li:active {
+  cursor: grabbing;
+}
+
+.group-card li.dragging {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  opacity: 0.8;
+}
+
+.group-card.group-over {
+  border: 3px dashed var(--accent-color); /* Prominent dashed border */
+  box-shadow: 0 0 10px var(--accent-color); /* Optional: Add a glow effect */
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ===========================
+   11. Draggable Student Styles
+=========================== */
+.draggable-student {
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.draggable-student.dragging {
+  background-color: var(--accent-color); /* Desired background color during drag */
+  color: var(--bg-color); /* Optional: Change text color for better contrast */
+  opacity: 0.8; /* Optional: Slight transparency */
+  cursor: grabbing; /* Change cursor to indicate active drag */
+}
+
+/* ===========================
+   12. Instructions Component Styles
+=========================== */
+.instructions {
+  background-color: var(--border-color);
+  color: var(--text-color);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.instructions h2 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.instructions p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.instructions ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.instructions ol li {
+  margin-bottom: 0.75rem;
+}
+
+.instructions strong {
+  color: var(--accent-color);
+}
+
+/* ===========================
+   13. Responsive Design
+=========================== */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem; /* Further reduced padding */
+  }
+
+  .class-list,
+  .student-list,
+  .groups-display {
+    flex-direction: column;
+  }
+
+  .group-card {
+    min-width: auto;
+  }
+
+  .group-count input[type='text'] {
+    width: 100%;
+  }
+
+  .grouping-options {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-student {
+    flex-direction: column;
+  }
+
+  .add-student button {
+    width: 100%;
+  }
+
+  .grouping-tool button {
+    width: 100%;
+  }
+
+  .instructions {
+    padding: 1rem;
+  }
+
+  .instructions h2 {
+    font-size: 1.5rem;
+  }
+
+  .instructions p,
+  .instructions ol li {
+    font-size: 1rem;
+  }
+
+  /* Adjust modal-content for smaller screens */
+  .modal-content {
+    width: 95vw;
+    padding: 0.75rem; /* Further reduced padding */
+  }
+
+  /* Adjust group-card font sizes and padding */
+  .group-card h3 {
+    font-size: 0.95rem; /* Further reduced font size */
+  }
+
+  .group-card li {
+    font-size: 0.8rem; /* Further reduced font size */
+    padding: 0.25rem; /* Further reduced padding */
+  }
+
+  .group-card {
+    padding: 0.4rem; /* Further reduced padding */
+    min-width: 120px; /* Further reduced min-width */
+  }
+}
+
+/* ===========================
+   14. Additional Enhancements
+=========================== */
+/* Smooth Transition for Group-Over State */
+.group-card.group-over {
+  border: 3px dashed var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Cursor for Droppable Area */
+.group-card {
+  cursor: pointer;
+}
+--- End of styles/globals.css ---
+
+--- Start of tsconfig.json ---
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
+
+--- End of tsconfig.json ---
+
+--- Start of types.ts ---
+// types.ts
+export interface Student {
+  id: number;
+  name: string;
+  present: boolean;
+  capabilityLevel: 'high' | 'medium' | 'low';
+}
+
+export interface Class {
+  id: number;
+  name: string;
+  students: Student[];
+}
+--- End of types.ts ---
+

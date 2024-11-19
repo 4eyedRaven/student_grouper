@@ -98,6 +98,7 @@ select {
   padding: 0.5rem;
   border-radius: 4px;
   font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type='text']::placeholder,
@@ -108,6 +109,14 @@ input[type='number']::placeholder {
 input[type='checkbox'] {
   transform: scale(1.2);
   cursor: pointer;
+}
+
+input[type='text']:focus,
+input[type='number']:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
 }
 
 /* ===========================
@@ -177,7 +186,6 @@ input[type='checkbox'] {
   font-size: 1rem;
   background-color: var(--border-color);
   color: var(--text-color);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .add-class input[type='text'].input-error {
@@ -308,7 +316,6 @@ input[type='checkbox'] {
   font-size: 1rem;
   background-color: var(--border-color);
   color: var(--text-color);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .group-count input[type='text'].input-error {
@@ -349,7 +356,7 @@ input[type='checkbox'] {
 
 .modal-content {
   background-color: var(--bg-color);
-  padding: 0.75rem; /* Further reduced padding */
+  padding: 1rem; /* Increased padding for better content spacing */
   border-radius: 8px;
   max-width: 90vw; /* Use viewport width for better fit */
   max-height: 90vh; /* Use viewport height to prevent overflow */
@@ -393,7 +400,7 @@ input[type='checkbox'] {
 =========================== */
 .group-card {
   background-color: var(--border-color);
-  padding: 0.3rem; /* Further reduced padding */
+  padding: 0.5rem; /* Increased padding for better spacing */
   border: 1px solid var(--border-color);
   border-radius: 6px; /* Slightly reduced radius */
   min-width: 120px; /* Further reduced min-width */
@@ -408,7 +415,12 @@ input[type='checkbox'] {
 .group-card h3 {
   margin-top: 0;
   color: var(--accent-color);
-  font-size: 0.95rem; /* Further reduced font size */
+  font-size: 1rem; /* Slightly increased font size for better readability */
+  cursor: pointer; /* Indicate that it's editable */
+}
+
+.group-card h3:hover {
+  color: var(--secondary-color); /* Visual feedback on hover */
 }
 
 .group-card ul {
@@ -459,7 +471,35 @@ input[type='checkbox'] {
 }
 
 /* ===========================
-   12. Instructions Component Styles
+   12. Editable Group Name Styles
+=========================== */
+.group-name {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.group-name:hover {
+  color: var(--secondary-color);
+}
+
+.group-name-input {
+  width: 100%;
+  padding: 0.3rem;
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+.group-name-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+/* ===========================
+   13. Instructions Component Styles
 =========================== */
 .instructions {
   background-color: var(--border-color);
@@ -495,7 +535,7 @@ input[type='checkbox'] {
 }
 
 /* ===========================
-   13. Responsive Design
+   14. Responsive Design
 =========================== */
 @media (max-width: 768px) {
   .container {
@@ -554,7 +594,7 @@ input[type='checkbox'] {
 
   /* Adjust group-card font sizes and padding */
   .group-card h3 {
-    font-size: 0.95rem; /* Further reduced font size */
+    font-size: 1rem; /* Slightly increased font size for better readability */
   }
 
   .group-card li {
@@ -566,10 +606,19 @@ input[type='checkbox'] {
     padding: 0.4rem; /* Further reduced padding */
     min-width: 120px; /* Further reduced min-width */
   }
+
+  /* Adjust .groups-display to use CSS Grid */
+  .groups-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+    justify-items: center;
+  }
 }
 
 /* ===========================
-   14. Additional Enhancements
+   15. Additional Enhancements
 =========================== */
 /* Smooth Transition for Group-Over State */
 .group-card.group-over {

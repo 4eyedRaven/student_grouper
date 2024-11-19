@@ -12,7 +12,9 @@ export default function GroupingTool({ students }: GroupingToolProps) {
   const [groupingOption, setGroupingOption] = useState<'byGroups' | 'byStudents'>('byGroups');
   const [groupCountInput, setGroupCountInput] = useState<string>(''); // Controlled input value as string
   const [groupCount, setGroupCount] = useState<number>(2); // Parsed numerical value
+  const [studentsPerGroup, setStudentsPerGroup] = useState<number>(4); // Parsed numerical value
   const [groups, setGroups] = useState<Student[][]>([]);
+  const [groupNames, setGroupNames] = useState<{ [key: number]: string }>({}); // State to track group names
   const [showModal, setShowModal] = useState(false);
   const [draggedStudentId, setDraggedStudentId] = useState<number | null>(null); // Tracks the dragged student
   const [inputError, setInputError] = useState<string>(''); // Error message for invalid input
@@ -26,10 +28,25 @@ export default function GroupingTool({ students }: GroupingToolProps) {
       return;
     }
 
-    // Validate groupCount
-    if (!Number.isInteger(groupCount) || groupCount < 1) {
-      setInputError('Please enter a valid number of groups.');
-      return;
+    // Validate input based on grouping option
+    if (groupingOption === 'byGroups') {
+      if (!Number.isInteger(groupCount) || groupCount < 1) {
+        setInputError('Please enter a valid number of groups (at least 1).');
+        return;
+      }
+      if (groupCount > students.length) {
+        setInputError('Number of groups cannot exceed the number of students.');
+        return;
+      }
+    } else {
+      if (!Number.isInteger(studentsPerGroup) || studentsPerGroup < 1) {
+        setInputError('Please enter a valid number of students per group (at least 1).');
+        return;
+      }
+      if (studentsPerGroup > students.length) {
+        setInputError('Students per group cannot exceed the number of students.');
+        return;
+      }
     }
 
     // Separate students by capability level
@@ -66,16 +83,7 @@ export default function GroupingTool({ students }: GroupingToolProps) {
 
     if (groupingOption === 'byGroups') {
       numGroups = groupCount;
-      if (numGroups < 1) {
-        setInputError('Number of groups must be at least 1.');
-        return;
-      }
     } else {
-      const studentsPerGroup = groupCount;
-      if (studentsPerGroup < 1) {
-        setInputError('Number of students per group must be at least 1.');
-        return;
-      }
       numGroups = Math.ceil(students.length / studentsPerGroup);
     }
 
@@ -92,7 +100,14 @@ export default function GroupingTool({ students }: GroupingToolProps) {
 
     console.log('New Groups:', newGroups);
 
+    // Initialize default group names
+    const initialGroupNames: { [key: number]: string } = {};
+    newGroups.forEach((_, index) => {
+      initialGroupNames[index] = `Group ${index + 1}`;
+    });
+
     setGroups(newGroups);
+    setGroupNames(initialGroupNames);
     setShowModal(true); // Display the modal with groups
     setInputError(''); // Reset any previous error messages
   };
@@ -162,16 +177,33 @@ export default function GroupingTool({ students }: GroupingToolProps) {
     const value = e.target.value;
     // Allow only digits
     if (/^\d*$/.test(value)) {
-      setGroupCountInput(value);
-      if (value === '') {
-        setGroupCount(0);
+      if (groupingOption === 'byGroups') {
+        setGroupCountInput(value);
+        if (value === '') {
+          setGroupCount(0);
+        } else {
+          setGroupCount(parseInt(value, 10));
+        }
       } else {
-        setGroupCount(parseInt(value, 10));
+        setGroupCountInput(value);
+        if (value === '') {
+          setStudentsPerGroup(0);
+        } else {
+          setStudentsPerGroup(parseInt(value, 10));
+        }
       }
       setInputError(''); // Reset error message on valid input
     } else {
       setInputError('Please enter a valid number.');
     }
+  };
+
+  // Function to handle group name changes
+  const handleGroupNameChange = (groupIndex: number, newName: string) => {
+    setGroupNames((prevNames) => ({
+      ...prevNames,
+      [groupIndex]: newName,
+    }));
   };
 
   return (
@@ -200,13 +232,14 @@ export default function GroupingTool({ students }: GroupingToolProps) {
             onChange={() => {
               setGroupingOption('byStudents');
               setGroupCountInput('');
-              setGroupCount(Math.ceil(students.length / 2)); // Example default
+              setStudentsPerGroup(4); // Reset to default
               setInputError('');
             }}
           />
           By Students per Group
         </label>
       </div>
+
       <div className="group-count">
         <input
           type="text"
@@ -244,14 +277,19 @@ export default function GroupingTool({ students }: GroupingToolProps) {
                   onDrop={(studentId) => handleDragEnd(studentId, `group-${groupIndex}`)}
                 >
                   <div className="group-card">
-                    <h3>Group {groupIndex + 1}</h3>
+                    {/* Editable Group Name */}
+                    <EditableGroupName
+                      groupIndex={groupIndex}
+                      groupName={groupNames[groupIndex]}
+                      onGroupNameChange={handleGroupNameChange}
+                    />
                     <ul>
                       {group.map((student) => (
                         <DraggableStudent
                           key={student.id}
                           student={student}
                           onDragStart={() => handleDragStart(student)}
-                          isDragging={draggedStudentId === student.id} // Pass isDragging prop
+                          isDragging={draggedStudentId === student.id}
                         />
                       ))}
                     </ul>
@@ -263,5 +301,57 @@ export default function GroupingTool({ students }: GroupingToolProps) {
         </div>
       )}
     </div>
+  );
+}
+
+// Component for Editable Group Name
+interface EditableGroupNameProps {
+  groupIndex: number;
+  groupName: string;
+  onGroupNameChange: (groupIndex: number, newName: string) => void;
+}
+
+function EditableGroupName({ groupIndex, groupName, onGroupNameChange }: EditableGroupNameProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempName, setTempName] = useState(groupName);
+
+  const handleNameClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleBlur = () => {
+    if (tempName.trim() === '') {
+      setTempName(groupName); // Revert to original name if empty
+    } else {
+      onGroupNameChange(groupIndex, tempName.trim());
+    }
+    setIsEditing(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      (e.target as HTMLInputElement).blur();
+    }
+    if (e.key === 'Escape') {
+      setTempName(groupName); // Revert to original name
+      setIsEditing(false);
+    }
+  };
+
+  return isEditing ? (
+    <input
+      type="text"
+      value={tempName}
+      onChange={(e) => setTempName(e.target.value)}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      autoFocus
+      className="group-name-input"
+      aria-label={`Edit name for Group ${groupIndex + 1}`}
+    />
+  ) : (
+    <h3 className="group-name" onClick={handleNameClick} role="button" tabIndex={0}>
+      {groupName}
+    </h3>
   );
 }
