@@ -1,19 +1,33 @@
+/* styles/globals.css */
+
+/* 1. CSS Variables */
 :root {
+  /* Color Palette */
   --bg-color: #1a1a1a;
   --text-color: #ffffff;
   --primary-color: #4a90e2;
   --secondary-color: #50e3c2;
   --accent-color: #f5a623;
   --border-color: #333333;
+
+  /* Font Variables (Assuming fonts are imported in layout) */
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
+
+/* 2. Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-    Helvetica Neue, sans-serif;
+  font-family: var(--font-geist-sans);
   background-color: var(--bg-color);
   color: var(--text-color);
-  margin: 0;
-  padding: 0;
+  line-height: 1.6;
+  min-height: 100vh;
 }
 
 .container {
@@ -22,48 +36,94 @@ body {
   padding: 2rem;
 }
 
-h1, h2, h3 {
+/* 3. Typography */
+h1,
+h2,
+h3 {
   color: var(--primary-color);
 }
 
+p {
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 4. Buttons */
 button {
   background-color: var(--primary-color);
   color: var(--text-color);
   border: none;
   padding: 0.5rem 1rem;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 1rem;
 }
 
 button:hover {
   background-color: var(--secondary-color);
 }
 
-input[type="text"], input[type="number"] {
+button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+/* 5. Inputs and Forms */
+input[type='text'],
+input[type='number'],
+select {
   background-color: var(--border-color);
   color: var(--text-color);
   border: 1px solid var(--border-color);
   padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
-.class-manager, .student-manager, .grouping-tool {
+input[type='text']::placeholder,
+input[type='number']::placeholder {
+  color: #cccccc;
+}
+
+input[type='checkbox'] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+/* 6. Class Manager Styles */
+.class-manager {
   margin-bottom: 2rem;
 }
 
-.class-list, .student-list {
+.class-manager h2 {
+  margin-bottom: 1rem;
+}
+
+.class-list {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 }
 
-.class-item, .student-item {
+.class-item {
   background-color: var(--border-color);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .class-item.active {
@@ -71,11 +131,12 @@ input[type="text"], input[type="number"] {
   color: var(--bg-color);
 }
 
-.student-item.excluded {
-  opacity: 0.5;
+.class-item:hover {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
 }
 
-.remove-btn, .exclude-btn {
+.remove-btn {
   background-color: transparent;
   color: var(--text-color);
   border: none;
@@ -84,66 +145,21 @@ input[type="text"], input[type="number"] {
   padding: 0 0.5rem;
 }
 
-.add-class, .add-student {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.grouping-options {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.group-count {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.groups-display {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.group-card {
-  background-color: var(--border-color);
-  padding: 1rem;
-  border-radius: 4px;
-  min-width: 200px;
-}
-
-.group-card h3 {
-  margin-top: 0;
+.remove-btn:hover {
   color: var(--accent-color);
 }
 
-.group-card ul {
-  list-style-type: none;
-  padding: 0;
+/* 7. Student Manager Styles */
+.student-manager {
+  margin-bottom: 2rem;
 }
 
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-
-  .class-list, .student-list, .groups-display {
-    flex-direction: column;
-  }
-
-  .group-card {
-    min-width: auto;
-  }
+.student-manager h2 {
+  margin-bottom: 1rem;
 }
 
-.student-item em {
-  color: var(--accent-color);
-  margin-left: 0.5rem;
-  font-style: normal;
-  font-size: 0.9rem;
+.student-list {
+  margin-bottom: 1rem;
 }
 
 .student-list table {
@@ -153,7 +169,7 @@ input[type="text"], input[type="number"] {
 
 .student-list th,
 .student-list td {
-  padding: 0.5rem;
+  padding: 0.75rem;
   border-bottom: 1px solid var(--border-color);
   text-align: left;
 }
@@ -166,19 +182,20 @@ input[type="text"], input[type="number"] {
   opacity: 0.5;
 }
 
-.student-list input[type='checkbox'] {
-  transform: scale(1.2);
+.student-list tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.remove-btn {
+.student-list .remove-btn {
   background-color: transparent;
   color: var(--text-color);
   border: none;
   cursor: pointer;
+  font-size: 1rem;
   padding: 0.2rem 0.5rem;
 }
 
-.remove-btn:hover {
+.student-list .remove-btn:hover {
   color: var(--accent-color);
 }
 
@@ -197,14 +214,55 @@ input[type="text"], input[type="number"] {
   flex-shrink: 0;
 }
 
-/* Modal Styles */
+/* 8. Grouping Tool Styles */
+.grouping-tool {
+  margin-bottom: 2rem;
+}
+
+.grouping-tool h2 {
+  margin-bottom: 1rem;
+}
+
+.grouping-options {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.grouping-options label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.grouping-options input[type='radio'] {
+  cursor: pointer;
+}
+
+.group-count {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.group-count input[type='number'] {
+  width: 200px;
+}
+
+.grouping-tool button {
+  padding: 0.5rem 1rem;
+}
+
+/* 9. Modal Styles */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -216,7 +274,7 @@ input[type="text"], input[type="number"] {
   background-color: var(--bg-color);
   padding: 2rem;
   border-radius: 8px;
-  max-width: 600px;
+  max-width: 800px;
   width: 90%;
   position: relative;
   color: var(--text-color);
@@ -243,26 +301,130 @@ input[type="text"], input[type="number"] {
   color: var(--primary-color);
 }
 
-.modal-content .groups-display {
-  margin-top: 1rem;
+.groups-display {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
-.modal-content .group-card {
+/* 10. Group Card Styles */
+.group-card {
   background-color: var(--border-color);
   padding: 1rem;
-  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   min-width: 200px;
+  transition: background-color 0.2s, border 0.2s, box-shadow 0.2s;
 }
 
-.modal-content .group-card h3 {
+.group-card h3 {
   margin-top: 0;
   color: var(--accent-color);
 }
 
-.modal-content .group-card ul {
+.group-card ul {
   list-style-type: none;
   padding: 0;
+  min-height: 50px; /* Ensure droppable area is visible */
+}
+
+.group-card li {
+  background-color: var(--border-color);
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  cursor: grab;
+  user-select: none;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.group-card li:active {
+  cursor: grabbing;
+}
+
+.group-card li.dragging {
+  background-color: var(--secondary-color);
+  color: var(--bg-color);
+  opacity: 0.8;
+}
+
+.group-card.group-over {
+  border: 3px dashed var(--accent-color); /* Prominent dashed border */
+  box-shadow: 0 0 10px var(--accent-color); /* Optional: Add a glow effect */
+}
+
+/* 11. Draggable Student Styles */
+.draggable-student {
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.draggable-student.dragging {
+  background-color: var(--accent-color); /* Desired background color during drag */
+  color: var(--bg-color); /* Optional: Change text color for better contrast */
+  opacity: 0.8; /* Optional: Slight transparency */
+  cursor: grabbing; /* Change cursor to indicate active drag */
+}
+
+/* 12. Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .class-list,
+  .student-list,
+  .groups-display {
+    flex-direction: column;
+  }
+
+  .group-card {
+    min-width: auto;
+  }
+
+  .group-count input[type='number'] {
+    width: 100%;
+  }
+
+  .grouping-options {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .add-student {
+    flex-direction: column;
+  }
+
+  .add-student button {
+    width: 100%;
+  }
+
+  .grouping-tool button {
+    width: 100%;
+  }
+}
+
+/* 13. Additional Enhancements */
+
+/* Hover Effects for Group Cards */
+.group-card:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Smooth Transition for Group-Over State */
+.group-card.group-over {
+  border: 3px dashed var(--accent-color);
+  box-shadow: 0 0 10px var(--accent-color);
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Disabled Buttons */
+button:disabled {
+  background-color: var(--border-color);
+  cursor: not-allowed;
+}
+
+/* Cursor for Droppable Area */
+.group-card {
+  cursor: pointer;
 }

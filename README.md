@@ -113,6 +113,15 @@ Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
   - Click outside the modal content.
   - Press the Escape key.
 
+### Drag-and-Drop Group Editing
+
+After generating groups, you can manually adjust them:
+
+- **Drag Students Between Groups:**
+  - Click and hold on a student's name to drag them to a different group.
+- **Real-Time Updates:**
+  - The group lists update immediately to reflect changes.
+
 ## Project Structure
 
 ```
