@@ -18,6 +18,7 @@ export default function ClassManager({
   onSelectClass,
 }: ClassManagerProps) {
   const [newClassName, setNewClassName] = useState('');
+  const [confirmDeleteClassId, setConfirmDeleteClassId] = useState<number | null>(null);
 
   const handleAddClass = () => {
     if (newClassName.trim()) {
@@ -26,7 +27,7 @@ export default function ClassManager({
     }
   };
 
-  // **Add this function to handle the Enter key**
+  // Handle Enter key for adding class
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleAddClass();
@@ -54,7 +55,7 @@ export default function ClassManager({
               className="remove-btn"
               onClick={(e) => {
                 e.stopPropagation();
-                onRemoveClass(c.id);
+                setConfirmDeleteClassId(c.id);
               }}
               aria-label={`Remove class ${c.name}`}
             >
@@ -68,15 +69,95 @@ export default function ClassManager({
           type="text"
           value={newClassName}
           onChange={(e) => setNewClassName(e.target.value)}
-          onKeyDown={handleKeyDown} // **Add this line**
+          onKeyDown={handleKeyDown}
           placeholder="New class name"
           aria-label="New class name"
-          className={newClassName.trim() === '' ? '' : ''}
         />
         <button onClick={handleAddClass} aria-label="Add Class">
           +
         </button>
       </div>
+
+      {/* Confirmation Modal */}
+      {confirmDeleteClassId !== null && (
+        <div className="modal-overlay" onClick={() => setConfirmDeleteClassId(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Confirm Delete</h3>
+            <p>
+              Are you sure you want to delete the class "
+              {classes.find((c) => c.id === confirmDeleteClassId)?.name}"? This action cannot be
+              undone.
+            </p>
+            <div className="modal-buttons">
+              <button
+                className="delete-btn"
+                onClick={() => {
+                  onRemoveClass(confirmDeleteClassId);
+                  setConfirmDeleteClassId(null);
+                }}
+              >
+                Delete
+              </button>
+              <button onClick={() => setConfirmDeleteClassId(null)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Styles for the modal */}
+      <style jsx>{`
+        .modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.7);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 1000;
+          cursor: pointer;
+        }
+
+        .modal-content {
+          background-color: var(--bg-color);
+          padding: 1.5rem;
+          border-radius: 8px;
+          max-width: 500px;
+          width: 90%;
+          position: relative;
+          color: var(--text-color);
+          cursor: default;
+        }
+
+        .modal-content h3 {
+          margin-top: 0;
+          color: var(--primary-color);
+        }
+
+        .modal-content p {
+          margin-bottom: 1.5rem;
+        }
+
+        .modal-buttons {
+          display: flex;
+          gap: 1rem;
+          justify-content: flex-end;
+        }
+
+        .modal-buttons button {
+          padding: 0.5rem 1rem;
+        }
+
+        .modal-buttons .delete-btn {
+          background-color: #e74c3c;
+        }
+
+        .modal-buttons .delete-btn:hover {
+          background-color: #c0392b;
+        }
+      `}</style>
     </div>
   );
 }
