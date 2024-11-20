@@ -1,4 +1,6 @@
 // components/DraggableStudent.tsx
+"use client";
+
 import React from 'react';
 
 interface DraggableStudentProps {

@@ -1,14 +1,15 @@
-// pages/index.tsx
+// components/ClientHome.tsx
+"use client";
+
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
-import ClassManager from '../components/ClassManager';
-import StudentManager from '../components/StudentManager';
-import GroupingTool from '../components/GroupingTool';
-import GroupHistory from '../components/GroupHistory';
-import Instructions from '../components/Instructions';
+import ClassManager from './ClassManager';
+import StudentManager from './StudentManager';
+import GroupingTool from './GroupingTool';
+import GroupHistory from './GroupHistory';
+import Instructions from './Instructions';
 import { Class, Student } from '../types';
 
-export default function Home() {
+export default function ClientHome() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [currentClassId, setCurrentClassId] = useState<number | null>(null);
   const [groupHistoryRefreshKey, setGroupHistoryRefreshKey] = useState<number>(0); // New state
@@ -33,7 +34,7 @@ export default function Home() {
           setCurrentClassId(null);
         }
       } catch (error) {
-        console.error('Home: Error parsing classes from localStorage:', error);
+        console.error('ClientHome: Error parsing classes from localStorage:', error);
         setClasses([]);
         setCurrentClassId(null);
       }
@@ -112,50 +113,38 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
-      <Head>
-        <title>Student Grouping App</title>
-        <meta
-          name="description"
-          content="A tool for teachers to manage classes and group students"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+    <>
+      <ClassManager
+        classes={classes}
+        currentClassId={currentClassId}
+        onAddClass={addClass}
+        onRemoveClass={removeClass}
+        onSelectClass={setCurrentClassId}
+      />
 
-      <main>
-        <h1>Student Grouping App</h1>
-        <ClassManager
-          classes={classes}
-          currentClassId={currentClassId}
-          onAddClass={addClass}
-          onRemoveClass={removeClass}
-          onSelectClass={setCurrentClassId}
-        />
+      {/* Display Instructions if no classes are present */}
+      {classes.length === 0 && <Instructions />}
 
-        {/* Display Instructions if no classes are present */}
-        {classes.length === 0 && <Instructions />}
-
-        {currentClass && (
-          <>
-            <StudentManager
-              students={currentClass.students}
-              onAddStudent={addStudent}
-              onRemoveStudent={removeStudent}
-              onToggleExclusion={toggleStudentExclusion}
-            />
-            <GroupingTool
-              students={currentClass.students.filter((s) => s.present)}
-              currentClassId={currentClassId}
-              onGroupingSaved={triggerGroupHistoryRefresh} // Pass the refresh trigger
-            />
-            <GroupHistory
-              currentClassId={currentClassId}
-              className={currentClass.name}
-              refreshKey={groupHistoryRefreshKey} // Pass the refresh key
-            />
-          </>
-        )}
-      </main>
-    </div>
+      {currentClass && (
+        <>
+          <StudentManager
+            students={currentClass.students}
+            onAddStudent={addStudent}
+            onRemoveStudent={removeStudent}
+            onToggleExclusion={toggleStudentExclusion}
+          />
+          <GroupingTool
+            students={currentClass.students.filter((s) => s.present)}
+            currentClassId={currentClassId}
+            onGroupingSaved={triggerGroupHistoryRefresh} // Pass the refresh trigger
+          />
+          <GroupHistory
+            currentClassId={currentClassId}
+            className={currentClass.name}
+            refreshKey={groupHistoryRefreshKey} // Pass the refresh key
+          />
+        </>
+      )}
+    </>
   );
 }

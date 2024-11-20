@@ -1,4 +1,6 @@
 // components/EditableGroupName.tsx
+"use client";
+
 import { useState } from 'react';
 
 interface EditableGroupNameProps {

@@ -1,3 +1,4 @@
+/* app/page.module.css */
 .page {
   --gray-rgb: 0, 0, 0;
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
@@ -13,7 +14,7 @@
   min-height: 100svh;
   padding: 80px;
   gap: 64px;
-  font-family: var(--font-geist-sans);
+  font-family: var(--font-roboto);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,7 +36,7 @@
 }
 
 .main ol {
-  font-family: var(--font-geist-mono);
+  font-family: var(--font-roboto-mono);
   padding-left: 0;
   margin: 0;
   font-size: 14px;
@@ -49,7 +50,7 @@
 }
 
 .main code {
-  font-family: inherit;
+  font-family: var(--font-roboto-mono);
   background: var(--gray-alpha-100);
   padding: 2px 4px;
   border-radius: 4px;

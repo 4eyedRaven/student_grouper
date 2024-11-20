@@ -1,4 +1,6 @@
 // components/ClassManager.tsx
+"use client";
+
 import { useState } from 'react';
 import { Class } from '../types';
 

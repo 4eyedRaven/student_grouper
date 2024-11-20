@@ -1,4 +1,5 @@
 // components/ShufflingAnimation.tsx
+"use client";
 
 import { useEffect } from 'react';
 import { motion, useAnimationControls } from 'framer-motion';

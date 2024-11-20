@@ -1,4 +1,6 @@
 // components/Instructions.tsx
+"use client";
+
 import React from 'react';
 
 const Instructions: React.FC = () => {
