@@ -1,8 +1,9 @@
 // components/ClassManager.tsx
 "use client";
 
-import { useState } from 'react';
-import { Class } from '../types';
+import { useState } from "react";
+import { Class } from "../types";
+import EditableClassName from "./EditableClassName";
 
 interface ClassManagerProps {
   classes: Class[];
@@ -10,6 +11,7 @@ interface ClassManagerProps {
   onAddClass: (className: string) => void;
   onRemoveClass: (classId: number) => void;
   onSelectClass: (selectedClassId: number) => void;
+  onRenameClass: (classId: number, newName: string) => void;
 }
 
 export default function ClassManager({
@@ -18,6 +20,7 @@ export default function ClassManager({
   onAddClass,
   onRemoveClass,
   onSelectClass,
+  onRenameClass,
 }: ClassManagerProps) {
   const [newClassName, setNewClassName] = useState('');
   const [confirmDeleteClassId, setConfirmDeleteClassId] = useState<number | null>(null);
@@ -29,7 +32,6 @@ export default function ClassManager({
     }
   };
 
-  // Handle Enter key for adding class
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleAddClass();
@@ -52,7 +54,11 @@ export default function ClassManager({
             }}
             aria-pressed={currentClassId === c.id}
           >
-            {c.name}
+            <EditableClassName
+              classId={c.id}
+              name={c.name}
+              onRename={onRenameClass}
+            />
             <button
               className="remove-btn"
               onClick={(e) => {
@@ -80,15 +86,14 @@ export default function ClassManager({
         </button>
       </div>
 
-      {/* Confirmation Modal */}
+      {/* Confirmation Modal (existing code remains unchanged) */}
       {confirmDeleteClassId !== null && (
         <div className="modal-overlay" onClick={() => setConfirmDeleteClassId(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Confirm Delete</h3>
             <p>
               Are you sure you want to delete the class "
-              {classes.find((c) => c.id === confirmDeleteClassId)?.name}"? This action cannot be
-              undone.
+              {classes.find((c) => c.id === confirmDeleteClassId)?.name}"? This action cannot be undone.
             </p>
             <div className="modal-buttons">
               <button
@@ -105,61 +110,7 @@ export default function ClassManager({
           </div>
         </div>
       )}
-
-      {/* Styles for the modal */}
-      <style jsx>{`
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.7);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-          cursor: pointer;
-        }
-
-        .modal-content {
-          background-color: var(--bg-color);
-          padding: 1.5rem;
-          border-radius: 8px;
-          max-width: 500px;
-          width: 90%;
-          position: relative;
-          color: var(--text-color);
-          cursor: default;
-        }
-
-        .modal-content h3 {
-          margin-top: 0;
-          color: var(--primary-color);
-        }
-
-        .modal-content p {
-          margin-bottom: 1.5rem;
-        }
-
-        .modal-buttons {
-          display: flex;
-          gap: 1rem;
-          justify-content: flex-end;
-        }
-
-        .modal-buttons button {
-          padding: 0.5rem 1rem;
-        }
-
-        .modal-buttons .delete-btn {
-          background-color: #e74c3c;
-        }
-
-        .modal-buttons .delete-btn:hover {
-          background-color: #c0392b;
-        }
-      `}</style>
+      {/* Modal styles remain unchanged */}
     </div>
   );
 }

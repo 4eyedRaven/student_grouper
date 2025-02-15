@@ -12,8 +12,9 @@ import { Class, Student } from '../types';
 export default function ClientHome() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [currentClassId, setCurrentClassId] = useState<number | null>(null);
-  const [groupHistoryRefreshKey, setGroupHistoryRefreshKey] = useState<number>(0); // New state
+  const [groupHistoryRefreshKey, setGroupHistoryRefreshKey] = useState<number>(0);
 
+  // Load classes from localStorage on mount
   useEffect(() => {
     const savedClasses = localStorage.getItem('classes');
     if (savedClasses) {
@@ -41,27 +42,37 @@ export default function ClientHome() {
     }
   }, []);
 
+  // Save classes to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('classes', JSON.stringify(classes));
   }, [classes]);
 
   const currentClass = classes.find((c) => c.id === currentClassId) || null;
 
+  // Function to add a new class
   const addClass = (className: string) => {
     const newClass: Class = { id: Date.now(), name: className, students: [] };
     setClasses([...classes, newClass]);
     setCurrentClassId(newClass.id);
   };
 
+  // Function to remove an existing class
   const removeClass = (classId: number) => {
     const updatedClasses = classes.filter((c) => c.id !== classId);
     setClasses(updatedClasses);
-
     if (currentClassId === classId) {
       setCurrentClassId(updatedClasses.length > 0 ? updatedClasses[0].id : null);
     }
   };
 
+  // New function to rename a class period
+  const renameClass = (classId: number, newName: string) => {
+    setClasses(classes.map((c) =>
+      c.id === classId ? { ...c, name: newName } : c
+    ));
+  };
+
+  // Function to add a new student to the current class
   const addStudent = (name: string, capabilityLevel: 'high' | 'medium' | 'low') => {
     if (currentClassId !== null) {
       const newStudent: Student = {
@@ -78,6 +89,7 @@ export default function ClientHome() {
     }
   };
 
+  // Function to remove a student from the current class
   const removeStudent = (studentId: number) => {
     if (currentClassId !== null) {
       setClasses(
@@ -90,6 +102,7 @@ export default function ClientHome() {
     }
   };
 
+  // Function to toggle student presence/exclusion
   const toggleStudentExclusion = (studentId: number) => {
     if (currentClassId !== null) {
       setClasses(
@@ -107,7 +120,7 @@ export default function ClientHome() {
     }
   };
 
-  // Function to trigger group history refresh
+  // Function to trigger a refresh of group history
   const triggerGroupHistoryRefresh = () => {
     setGroupHistoryRefreshKey((prevKey) => prevKey + 1);
   };
@@ -120,9 +133,10 @@ export default function ClientHome() {
         onAddClass={addClass}
         onRemoveClass={removeClass}
         onSelectClass={setCurrentClassId}
+        onRenameClass={renameClass} // Pass the renaming function to ClassManager
       />
 
-      {/* Display Instructions if no classes are present */}
+      {/* Display instructions when no classes exist */}
       {classes.length === 0 && <Instructions />}
 
       {currentClass && (
@@ -136,12 +150,12 @@ export default function ClientHome() {
           <GroupingTool
             students={currentClass.students.filter((s) => s.present)}
             currentClassId={currentClassId}
-            onGroupingSaved={triggerGroupHistoryRefresh} // Pass the refresh trigger
+            onGroupingSaved={triggerGroupHistoryRefresh}
           />
           <GroupHistory
             currentClassId={currentClassId}
             className={currentClass.name}
-            refreshKey={groupHistoryRefreshKey} // Pass the refresh key
+            refreshKey={groupHistoryRefreshKey}
           />
         </>
       )}
