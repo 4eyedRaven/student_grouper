@@ -7,6 +7,7 @@ import StudentManager from './StudentManager';
 import GroupingTool from './GroupingTool';
 import GroupHistory from './GroupHistory';
 import Instructions from './Instructions';
+import InfoButton from './InfoButton';
 import { Class, Student } from '../types';
 
 export default function ClientHome() {
@@ -126,14 +127,17 @@ export default function ClientHome() {
   };
 
   return (
-    <>
+    <div className="client-home-container">
+      {/* Info Button - Show only when classes exist */}
+      <InfoButton visible={classes.length > 0} />
+      
       <ClassManager
         classes={classes}
         currentClassId={currentClassId}
         onAddClass={addClass}
         onRemoveClass={removeClass}
         onSelectClass={setCurrentClassId}
-        onRenameClass={renameClass} // Pass the renaming function to ClassManager
+        onRenameClass={renameClass}
       />
 
       {/* Display instructions when no classes exist */}
@@ -159,6 +163,6 @@ export default function ClientHome() {
           />
         </>
       )}
-    </>
+    </div>
   );
 }

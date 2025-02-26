@@ -3,9 +3,23 @@
 
 import React from 'react';
 
-const Instructions: React.FC = () => {
+interface InstructionsProps {
+  isPopover?: boolean;
+  onClose?: () => void;
+}
+
+const Instructions: React.FC<InstructionsProps> = ({ isPopover = false, onClose }) => {
   return (
-    <div className="instructions">
+    <div className={`instructions ${isPopover ? 'instructions-popover' : ''}`}>
+      {isPopover && (
+        <button 
+          className="close-button" 
+          onClick={onClose}
+          aria-label="Close instructions"
+        >
+          &times;
+        </button>
+      )}
       <h2>Welcome to the Student Grouping App!</h2>
       <p>
         This application helps you manage your classes and students, and generate balanced groups effortlessly. Here's how to get started:

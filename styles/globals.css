@@ -206,7 +206,95 @@ select:focus {
 }
 
 /* ===========================
-   7. Student Manager Styles
+   7. Info Button & Popover Styles
+=========================== */
+.client-home-container {
+  position: relative;
+}
+
+.info-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  z-index: 10;
+  font-style: italic;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.info-button:hover {
+  background-color: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.popover-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popover-container {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  border-radius: 8px;
+  background-color: var(--bg-color);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+}
+
+.instructions-popover {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  color: var(--text-color);
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.close-button:hover {
+  background-color: var(--border-color);
+}
+
+/* ===========================
+   8. Student Manager Styles
 =========================== */
 .student-manager {
   margin-bottom: 2rem;
@@ -274,7 +362,7 @@ select:focus {
 }
 
 /* ===========================
-   8. Grouping Tool Styles
+   9. Grouping Tool Styles
 =========================== */
 .grouping-tool {
   margin-bottom: 2rem;
@@ -338,7 +426,7 @@ select:focus {
 }
 
 /* ===========================
-   9. Modal Styles
+   10. Modal Styles
 =========================== */
 .modal-overlay {
   position: fixed;
@@ -387,6 +475,21 @@ select:focus {
   color: var(--primary-color);
 }
 
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
 .groups-display {
   display: flex;
   flex-wrap: wrap;
@@ -396,7 +499,7 @@ select:focus {
 }
 
 /* ===========================
-   10. Group Card Styles
+   11. Group Card Styles
 =========================== */
 .group-card {
   background-color: var(--border-color);
@@ -451,7 +554,7 @@ select:focus {
 }
 
 /* ===========================
-   11. Droppable Group Over Styles
+   12. Droppable Group Over Styles
 =========================== */
 .droppable.group-over .group-card {
   border: 3px dashed var(--accent-color);
@@ -460,7 +563,7 @@ select:focus {
 }
 
 /* ===========================
-   12. Draggable Student Styles
+   13. Draggable Student Styles
 =========================== */
 .draggable-student {
   transition: background-color 0.2s, color 0.2s, opacity 0.2s;
@@ -474,7 +577,7 @@ select:focus {
 }
 
 /* ===========================
-   13. Editable Group Name Styles
+   14. Editable Group Name Styles
 =========================== */
 .group-name {
   cursor: pointer;
@@ -502,7 +605,7 @@ select:focus {
 }
 
 /* ===========================
-   14. Instructions Component Styles
+   15. Instructions Component Styles
 =========================== */
 .instructions {
   background-color: var(--border-color);
@@ -538,7 +641,7 @@ select:focus {
 }
 
 /* ===========================
-   15. Responsive Design
+   16. Responsive Design
 =========================== */
 @media (max-width: 768px) {
   .container {
@@ -634,7 +737,7 @@ select:focus {
 }
 
 /* ===========================
-   16. Additional Enhancements
+   17. Additional Enhancements
 =========================== */
 /* Cursor for Droppable Area */
 .group-card {
@@ -651,7 +754,7 @@ select:focus {
 }
 
 /* ===========================
-   17. Group History Styles
+   18. Group History Styles
 =========================== */
 .group-history {
   margin-top: 2rem;
