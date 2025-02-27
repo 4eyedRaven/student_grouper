@@ -13,6 +13,10 @@ const EditableClassName: React.FC<EditableClassNameProps> = ({ classId, name, on
   const [isEditing, setIsEditing] = useState(false);
   const [tempName, setTempName] = useState(name);
 
+  const handleNameClick = () => {
+    setIsEditing(true);
+  };
+
   const handleBlur = () => {
     const trimmedName = tempName.trim();
     if (trimmedName && trimmedName !== name) {
@@ -46,9 +50,14 @@ const EditableClassName: React.FC<EditableClassNameProps> = ({ classId, name, on
     />
   ) : (
     <span
-      onDoubleClick={() => setIsEditing(true)}
+      onClick={handleNameClick}
       className="editable-class-name"
-      title="Double-click to edit"
+      title="Click to edit"
+      role="button"
+      tabIndex={0}
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') handleNameClick();
+      }}
     >
       {name}
     </span>
