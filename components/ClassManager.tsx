@@ -92,8 +92,9 @@ export default function ClassManager({
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h3>Confirm Delete</h3>
             <p>
-              Are you sure you want to delete the class '{classes.find((c) => c.id === confirmDeleteClassId)?.name}'? This action cannot be undone.
+              Are you sure you want to delete the class &apos;{classes.find((c) => c.id === confirmDeleteClassId)?.name}&apos;? This action cannot be undone.
             </p>
+
             <div className="modal-buttons">
               <button
                 className="delete-btn"
