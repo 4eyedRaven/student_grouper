@@ -20,25 +20,25 @@ const Instructions: React.FC<InstructionsProps> = ({ isPopover = false, onClose 
           &times;
         </button>
       )}
-      <h2>Welcome to the Student Grouping App!</h2>
+      <h2>Welcome to Random Roster!</h2>
       <p>
-        This application helps you manage your classes and students, and generate balanced groups effortlessly. Here&apos;s how to get started:
+        Random Roster helps you manage your classes and generate randomized rosters for group assignments effortlessly. Here’s how to get started:
       </p>
       <ol>
         <li>
-          <strong>Add a Class:</strong> Enter the name of your class and click the &quot;+&quot; button to create a new class.
+          <strong>Add a Class:</strong> Enter the name of your class and click the “+” button to create a new class.
         </li>
         <li>
-          <strong>Add Students:</strong> Select the class you&apos;ve created, enter student names along with their capability levels, and add them to the class.
+          <strong>Add Students:</strong> Select your class, enter student names, and add them to the class.
         </li>
         <li>
-          <strong>Generate Groups:</strong> Use the &quot;Generate Groups&quot; feature to create balanced groups based on your selected criteria.
+          <strong>Generate Roster:</strong> Use the “Generate Groups” feature to create randomized, balanced rosters.
         </li>
         <li>
-          <strong>View Previous Groupings:</strong> Access your saved groupings from the &quot;Previous Groupings&quot; list to review or reuse them.
+          <strong>View Previous Rosters:</strong> Access saved rosters from the “Previous Groupings” list to review or reuse them.
         </li>
         <li>
-          <strong>Edit Groups:</strong> Easily rearrange students between groups using the drag-and-drop functionality and rename groups as needed.
+          <strong>Edit Rosters:</strong> Rearrange students between groups using the drag-and-drop functionality and rename groups as needed.
         </li>
       </ol>
       <p>

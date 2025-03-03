@@ -1,6 +1,6 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import localFont from 'next/font/local'; // Import localFont
+import localFont from 'next/font/local';
 import "../styles/globals.css";
 import ClientWrapper from "../components/ClientWrapper";
 
@@ -19,8 +19,8 @@ const geist = localFont({
     },
     // Add other weights/styles as needed
   ],
-  variable: '--font-geist', // Define the CSS variable
-  display: 'swap', // Optional: Defines how the font is displayed
+  variable: '--font-geist',
+  display: 'swap',
 });
 
 // Import Geist Mono as a local font
@@ -38,13 +38,13 @@ const geistMono = localFont({
     },
     // Add other weights/styles as needed
   ],
-  variable: '--font-geist-mono', // Define the CSS variable
-  display: 'swap', // Optional: Defines how the font is displayed
+  variable: '--font-geist-mono',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: "Student Grouping App",
-  description: "A tool for teachers to manage classes and group students",
+  title: "Random Roster",
+  description: "Random Roster is a web app for managing classes and generating randomized rosters.",
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -59,9 +59,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${geist.variable} ${geistMono.variable}`}>

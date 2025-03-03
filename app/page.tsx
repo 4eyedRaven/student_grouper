@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="container">
       <main>
-        <h1>Student Grouping App</h1>
+        <h1>Random Roster</h1>
         <ClientHome />
       </main>
     </div>

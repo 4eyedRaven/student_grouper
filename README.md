@@ -1,9 +1,9 @@
 
-# Student Grouping App
+# Random Roster
 
-The Student Grouping App is a web application designed for teachers to manage classes and group students effectively. It allows teachers to create classes, add students with varying capability levels, and generate balanced student groups based on specified criteria.
+Random Roster is a web application designed for teachers to manage classes and group students effectively. It allows teachers to create classes, add students with varying capability levels, and generate balanced student groups based on specified criteria.
 
-**The app is available for testing at [https://student-grouper.vercel.app/](https://student-grouper.vercel.app/).**
+**The app is available for testing at [https://randomroster.com/](https://randomroster.com).**
 
 ## Features
 
