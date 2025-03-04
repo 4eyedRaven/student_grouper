@@ -14,6 +14,8 @@ export default function ClientHome() {
   const [classes, setClasses] = useState<Class[]>([]);
   const [currentClassId, setCurrentClassId] = useState<number | null>(null);
   const [groupHistoryRefreshKey, setGroupHistoryRefreshKey] = useState<number>(0);
+  // New state flag to indicate that classes have been loaded from localStorage.
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   // Load classes from localStorage on mount
   useEffect(() => {
@@ -41,12 +43,16 @@ export default function ClientHome() {
         setCurrentClassId(null);
       }
     }
+    // Mark that the load is complete so that saving can begin.
+    setHasLoaded(true);
   }, []);
 
-  // Save classes to localStorage whenever they change
+  // Save classes to localStorage whenever they change, but only after load has completed.
   useEffect(() => {
-    localStorage.setItem('classes', JSON.stringify(classes));
-  }, [classes]);
+    if (hasLoaded) {
+      localStorage.setItem('classes', JSON.stringify(classes));
+    }
+  }, [classes, hasLoaded]);
 
   const currentClass = classes.find((c) => c.id === currentClassId) || null;
 
@@ -66,7 +72,7 @@ export default function ClientHome() {
     }
   };
 
-  // New function to rename a class period
+  // Function to rename a class period
   const renameClass = (classId: number, newName: string) => {
     setClasses(classes.map((c) =>
       c.id === classId ? { ...c, name: newName } : c
