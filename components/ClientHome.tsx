@@ -8,6 +8,7 @@ import GroupingTool from './GroupingTool';
 import GroupHistory from './GroupHistory';
 import Instructions from './Instructions';
 import InfoButton from './InfoButton';
+import CSVExportButton from "./CSVExportButton";
 import { Class, Student } from '../types';
 
 export default function ClientHome() {
@@ -169,6 +170,7 @@ export default function ClientHome() {
           />
         </>
       )}
+      <CSVExportButton classes={classes} />
     </div>
   );
 }
